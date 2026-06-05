@@ -1,0 +1,41 @@
+import type { Metadata } from "next";
+import { Inter, UnifrakturCook } from "next/font/google";
+import "./globals.css";
+import { Providers } from "@/components/providers/Providers";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+// Blackletter display face — matches the engraved Hollowtips wordmark.
+// Used sparingly (logo lockup only). Only ships weight 700.
+const display = UnifrakturCook({
+  weight: "700",
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+export const metadata: Metadata = {
+  title: "Hollowtips Verify",
+  description: "Premium QR product verification — Hollowtips admin.",
+  icons: {
+    icon: "/brand/hollowtips-bullet.png",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning className="dark">
+      <body className={`${inter.variable} ${display.variable} font-sans`}>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}

@@ -1,0 +1,164 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2, Plus, X, Sparkles, AlertCircle } from "lucide-react";
+import { generateCodes } from "@/app/admin/(shell)/codes/actions";
+import { Field, TextInput } from "@/components/admin/ui/form";
+
+interface ProductOption {
+  id: string;
+  name: string;
+}
+
+export function GenerateCodesDialog({
+  products,
+  defaultProductId,
+}: {
+  products: ProductOption[];
+  defaultProductId?: string;
+}) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [productId, setProductId] = useState(defaultProductId ?? "");
+  const [quantity, setQuantity] = useState(50);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  function submit() {
+    setError(null);
+    startTransition(async () => {
+      const res = await generateCodes(productId, quantity);
+      if ("error" in res) {
+        setError(res.error);
+        return;
+      }
+      setOpen(false);
+      router.refresh();
+    });
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="btn-gold focus-gold"
+        disabled={products.length === 0}
+        title={products.length === 0 ? "Create a product first" : undefined}
+      >
+        <Plus className="h-4 w-4" />
+        Generate codes
+      </button>
+
+      {open && (
+        <div className="fixed inset-0 z-[60] grid place-items-center p-4">
+          <div
+            onClick={() => !pending && setOpen(false)}
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+          />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Generate codes"
+            className="relative z-10 w-full max-w-md animate-fade-in rounded-2xl border border-subtle bg-panel p-6 shadow-panel"
+          >
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gold-gradient text-black shadow-gold-glow">
+                  <Sparkles className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="font-display text-lg tracking-wide text-fg">
+                    Generate codes
+                  </h3>
+                  <p className="text-xs text-muted">
+                    Unique verification codes for a product.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                aria-label="Close"
+                onClick={() => !pending && setOpen(false)}
+                className="focus-gold grid h-8 w-8 place-items-center rounded-lg text-muted hover:text-fg"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {error && (
+              <div
+                role="alert"
+                className="mb-4 flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-300"
+              >
+                <AlertCircle className="h-4 w-4 shrink-0" />
+                {error}
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <Field label="Product" htmlFor="gen-product" required>
+                <select
+                  id="gen-product"
+                  value={productId}
+                  onChange={(e) => setProductId(e.target.value)}
+                  className="focus-gold w-full rounded-xl border border-subtle bg-bg/60 px-3 py-2.5 text-fg"
+                >
+                  <option value="">Select a product…</option>
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+
+              <Field
+                label="Quantity"
+                htmlFor="gen-qty"
+                required
+                hint="1–1000 codes per batch"
+              >
+                <TextInput
+                  id="gen-qty"
+                  type="number"
+                  min={1}
+                  max={1000}
+                  value={quantity}
+                  onChange={(e) => setQuantity(Number(e.target.value))}
+                />
+              </Field>
+            </div>
+
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                disabled={pending}
+                className="focus-gold rounded-xl border border-subtle px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:text-fg disabled:opacity-60"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={submit}
+                disabled={pending || !productId}
+                className="btn-gold focus-gold"
+              >
+                {pending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Generating…
+                  </>
+                ) : (
+                  `Generate ${quantity > 0 ? quantity : ""}`.trim()
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

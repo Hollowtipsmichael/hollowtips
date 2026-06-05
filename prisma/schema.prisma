@@ -1,0 +1,100 @@
+// Hollowtips Verify — Prisma schema
+// Local dev uses SQLite. For production, switch `provider` to "postgresql"
+// and point DATABASE_URL at your Postgres instance (see .env.example).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Auth ──────────────────────────────────────────────────
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+}
+
+// ─── Catalog ───────────────────────────────────────────────
+model Product {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  strainName      String?
+  description     String?
+  videoUrl        String?
+  artworkUrl      String?
+  productImageUrl String?
+  ingredients     String? // long text
+  warningText     String? // long text
+  socialLinks     String? // JSON string (SQLite has no Json type); parse in code
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  verificationCodes VerificationCode[]
+  scanEvents        ScanEvent[]
+  emailCaptures     EmailCapture[]
+}
+
+// ─── Verification ──────────────────────────────────────────
+// NOTE: SQLite (local dev) does not support Prisma native enums, so enum-like
+// fields are stored as String. Allowed values are enforced in code via the
+// constants/types in `src/lib/enums.ts`. When moving to PostgreSQL you may
+// convert `status` / `deviceType` to real `enum` types if desired.
+// CodeStatus values: "UNUSED" | "VERIFIED" | "FLAGGED"
+model VerificationCode {
+  id             String    @id @default(cuid())
+  code           String    @unique
+  productId      String
+  product        Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  status         String    @default("UNUSED") // CodeStatus
+  firstScannedAt DateTime?
+  scanCount      Int       @default(0)
+  createdAt      DateTime  @default(now())
+
+  scanEvents ScanEvent[]
+
+  @@index([code])
+  @@index([productId])
+}
+
+// ─── Scans ─────────────────────────────────────────────────
+// DeviceType values: "IPHONE" | "ANDROID" | "DESKTOP" | "OTHER" (see note above).
+model ScanEvent {
+  id          String           @id @default(cuid())
+  codeId      String
+  code        VerificationCode @relation(fields: [codeId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ipAddress   String?
+  country     String?
+  region      String?
+  city        String?
+  latitude    Float?
+  longitude   Float?
+  deviceType  String           @default("OTHER") // DeviceType
+  userAgent   String?
+  isFirstScan Boolean          @default(false)
+  scannedAt   DateTime         @default(now())
+
+  @@index([codeId])
+  @@index([productId])
+}
+
+// ─── Marketing ─────────────────────────────────────────────
+model EmailCapture {
+  id         String   @id @default(cuid())
+  email      String
+  productId  String?
+  product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  capturedAt DateTime @default(now())
+
+  @@index([productId])
+}

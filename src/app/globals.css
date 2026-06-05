@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────────────────
+   Theme tokens — values are space-separated RGB channels so
+   Tailwind's `rgb(var(--token) / <alpha>)` works.
+   :root = light ("warm off-white gallery")
+   .dark = dark ("near-black gallery")
+   Gold + graffiti accents are constant across both themes.
+   ────────────────────────────────────────────────────────── */
+:root {
+  --bg: 250 250 247; /* #FAFAF7 */
+  --panel: 255 255 255; /* #FFFFFF */
+  --panel-raised: 255 255 255;
+  --border-subtle: 230 228 220; /* warm hairline */
+  --fg: 23 23 20; /* near-black */
+  --fg-muted: 110 108 100;
+  --grain-opacity: 0.02;
+}
+
+.dark {
+  --bg: 10 10 10; /* #0A0A0A */
+  --panel: 20 20 20; /* #141414 */
+  --panel-raised: 26 26 26; /* #1A1A1A */
+  --border-subtle: 38 38 38; /* #262626 */
+  --fg: 245 245 240;
+  --fg-muted: 138 138 130;
+  --grain-opacity: 0.035;
+}
+
+@layer base {
+  * {
+    @apply border-subtle;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-bg text-fg;
+    font-feature-settings: "cv11", "ss01";
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  /* Smooth theme transition on the common themed surfaces */
+  .theme-transition,
+  .theme-transition * {
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+}
+
+@layer components {
+  /* Gold gradient text (wordmark, numbers, headings accents) */
+  .text-gold-gradient {
+    @apply bg-gold-gradient bg-clip-text text-transparent;
+  }
+
+  /* Primary gold button — gradient + inner highlight + soft outer glow */
+  .btn-gold {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-xl
+      bg-gold-gradient px-5 py-2.5 font-semibold text-black
+      shadow-gold-glow transition-all duration-200
+      hover:shadow-gold-glow-lg hover:brightness-105
+      active:brightness-95 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-gold::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 rounded-xl;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.35),
+      transparent 45%
+    );
+  }
+
+  /* Premium card surface — hairline border, soft shadow, hover lift */
+  .card {
+    @apply rounded-2xl border border-subtle bg-panel shadow-panel
+      transition-all duration-300;
+  }
+  .card-hover {
+    @apply hover:-translate-y-0.5 hover:border-gold/30
+      hover:shadow-[0_0_0_1px_rgba(212,175,55,0.18),0_10px_40px_rgba(0,0,0,0.4)];
+  }
+
+  /* Hairline gold rule */
+  .rule-gold {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold/40 to-transparent;
+  }
+
+  /* Focus ring used across inputs/buttons */
+  .focus-gold {
+    @apply focus-visible:outline-none focus-visible:ring-2
+      focus-visible:ring-gold/60 focus-visible:ring-offset-2
+      focus-visible:ring-offset-bg;
+  }
+}
+
+@layer utilities {
+  /* Subtle film-grain overlay for depth (used on dark gallery surfaces) */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* Thin custom scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border-subtle)) transparent;
+  }
+}
+
+/* Prevent flash by keeping background dark before hydration on dark default */
+html.dark body {
+  background-color: #0a0a0a;
+}
