@@ -21,14 +21,23 @@ export function GenerateCodesDialog({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [productId, setProductId] = useState(defaultProductId ?? "");
-  const [quantity, setQuantity] = useState(50);
+  // Stored as a string so the field can be cleared/edited freely (no stuck
+  // leading zero). Digits only; leading zeros stripped. Parsed on submit.
+  const [quantity, setQuantity] = useState("50");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  const qty = parseInt(quantity || "0", 10) || 0;
+
+  function onQuantityChange(value: string) {
+    const cleaned = value.replace(/[^0-9]/g, "").replace(/^0+(?=\d)/, "");
+    setQuantity(cleaned);
+  }
 
   function submit() {
     setError(null);
     startTransition(async () => {
-      const res = await generateCodes(productId, quantity);
+      const res = await generateCodes(productId, qty);
       if ("error" in res) {
         setError(res.error);
         return;
@@ -122,11 +131,12 @@ export function GenerateCodesDialog({
               >
                 <TextInput
                   id="gen-qty"
-                  type="number"
-                  min={1}
-                  max={1000}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={quantity}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
+                  onChange={(e) => onQuantityChange(e.target.value)}
+                  placeholder="50"
                 />
               </Field>
             </div>
@@ -143,7 +153,7 @@ export function GenerateCodesDialog({
               <button
                 type="button"
                 onClick={submit}
-                disabled={pending || !productId}
+                disabled={pending || !productId || qty < 1}
                 className="btn-gold focus-gold"
               >
                 {pending ? (
@@ -152,7 +162,7 @@ export function GenerateCodesDialog({
                     Generating…
                   </>
                 ) : (
-                  `Generate ${quantity > 0 ? quantity : ""}`.trim()
+                  `Generate ${qty > 0 ? qty : ""}`.trim()
                 )}
               </button>
             </div>
