@@ -6,9 +6,14 @@ import { Loader2, Plus, X, Sparkles, AlertCircle } from "lucide-react";
 import { generateCodes } from "@/app/admin/(shell)/codes/actions";
 import { Field, TextInput } from "@/components/admin/ui/form";
 
+interface VariantOption {
+  id: string;
+  name: string;
+}
 interface ProductOption {
   id: string;
   name: string;
+  variants: VariantOption[];
 }
 
 export function GenerateCodesDialog({
@@ -21,6 +26,7 @@ export function GenerateCodesDialog({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [productId, setProductId] = useState(defaultProductId ?? "");
+  const [variantId, setVariantId] = useState("");
   // Stored as a string so the field can be cleared/edited freely (no stuck
   // leading zero). Digits only; leading zeros stripped. Parsed on submit.
   const [quantity, setQuantity] = useState("50");
@@ -28,6 +34,14 @@ export function GenerateCodesDialog({
   const [pending, startTransition] = useTransition();
 
   const qty = parseInt(quantity || "0", 10) || 0;
+  const selectedProduct = products.find((p) => p.id === productId);
+  const variants = selectedProduct?.variants ?? [];
+  const variantRequired = variants.length > 0;
+
+  function onProductChange(id: string) {
+    setProductId(id);
+    setVariantId(""); // reset variant when product changes
+  }
 
   function onQuantityChange(value: string) {
     const cleaned = value.replace(/[^0-9]/g, "").replace(/^0+(?=\d)/, "");
@@ -37,7 +51,7 @@ export function GenerateCodesDialog({
   function submit() {
     setError(null);
     startTransition(async () => {
-      const res = await generateCodes(productId, qty);
+      const res = await generateCodes(productId, variantId || null, qty);
       if ("error" in res) {
         setError(res.error);
         return;
@@ -111,7 +125,7 @@ export function GenerateCodesDialog({
                 <select
                   id="gen-product"
                   value={productId}
-                  onChange={(e) => setProductId(e.target.value)}
+                  onChange={(e) => onProductChange(e.target.value)}
                   className="focus-gold w-full rounded-xl border border-subtle bg-bg/60 px-3 py-2.5 text-fg"
                 >
                   <option value="">Select a product…</option>
@@ -122,6 +136,24 @@ export function GenerateCodesDialog({
                   ))}
                 </select>
               </Field>
+
+              {variantRequired && (
+                <Field label="Variant" htmlFor="gen-variant" required>
+                  <select
+                    id="gen-variant"
+                    value={variantId}
+                    onChange={(e) => setVariantId(e.target.value)}
+                    className="focus-gold w-full rounded-xl border border-subtle bg-bg/60 px-3 py-2.5 text-fg"
+                  >
+                    <option value="">Select a variant…</option>
+                    {variants.map((v) => (
+                      <option key={v.id} value={v.id}>
+                        {v.name}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              )}
 
               <Field
                 label="Quantity"
@@ -153,7 +185,12 @@ export function GenerateCodesDialog({
               <button
                 type="button"
                 onClick={submit}
-                disabled={pending || !productId || qty < 1}
+                disabled={
+                  pending ||
+                  !productId ||
+                  qty < 1 ||
+                  (variantRequired && !variantId)
+                }
                 className="btn-gold focus-gold"
               >
                 {pending ? (

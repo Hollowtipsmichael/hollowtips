@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { parseSocialLinks } from "@/lib/social";
 import { ProductForm } from "@/components/admin/ProductForm";
 import { DeleteProductButton } from "@/components/admin/DeleteProductButton";
+import { VariantsManager } from "@/components/admin/VariantsManager";
 
 export const metadata = { title: "Edit Product — Hollowtips Verify" };
 export const dynamic = "force-dynamic";
@@ -15,7 +16,10 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const product = await prisma.product.findUnique({ where: { id } });
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { variants: { orderBy: { createdAt: "asc" } } },
+  });
   if (!product) notFound();
 
   return (
@@ -45,6 +49,7 @@ export default async function EditProductPage({
           name: product.name,
           slug: product.slug,
           strainName: product.strainName ?? "",
+          productType: product.productType ?? "",
           description: product.description ?? "",
           ingredients: product.ingredients ?? "",
           warningText: product.warningText ?? "",
@@ -54,6 +59,19 @@ export default async function EditProductPage({
           social: parseSocialLinks(product.socialLinks),
           isActive: product.isActive,
         }}
+      />
+
+      <VariantsManager
+        productId={product.id}
+        variants={product.variants.map((v) => ({
+          id: v.id,
+          name: v.name,
+          strainName: v.strainName,
+          productType: v.productType,
+          artworkUrl: v.artworkUrl,
+          productImageUrl: v.productImageUrl,
+          isActive: v.isActive,
+        }))}
       />
     </div>
   );

@@ -15,6 +15,7 @@ export interface ProductFormInitial {
   name: string;
   slug: string;
   strainName: string;
+  productType: string;
   description: string;
   ingredients: string;
   warningText: string;
@@ -29,6 +30,7 @@ const EMPTY: ProductFormInitial = {
   name: "",
   slug: "",
   strainName: "",
+  productType: "",
   description: "",
   ingredients: "",
   warningText: "",
@@ -71,6 +73,11 @@ export function ProductForm({
       name: form.name,
       slug: form.slug || undefined,
       strainName: form.strainName || undefined,
+      productType: (form.productType || undefined) as
+        | "INDICA"
+        | "SATIVA"
+        | "HYBRID"
+        | undefined,
       description: form.description || undefined,
       ingredients: form.ingredients || undefined,
       warningText: form.warningText || undefined,
@@ -133,15 +140,29 @@ export function ProductForm({
                     placeholder="sorbet-shooter"
                   />
                 </Field>
-                <Field label="Strain name" htmlFor="strain">
-                  <TextInput
-                    id="strain"
-                    value={form.strainName}
-                    onChange={(e) => set("strainName", e.target.value)}
-                    placeholder="Indica · Hybrid · Sativa"
-                  />
+                <Field label="Type" htmlFor="ptype">
+                  <select
+                    id="ptype"
+                    value={form.productType}
+                    onChange={(e) => set("productType", e.target.value)}
+                    className="focus-gold w-full rounded-xl border border-subtle bg-bg/60 px-3 py-2.5 text-fg"
+                  >
+                    <option value="">None</option>
+                    <option value="INDICA">Indica</option>
+                    <option value="SATIVA">Sativa</option>
+                    <option value="HYBRID">Hybrid</option>
+                  </select>
                 </Field>
               </div>
+
+              <Field label="Strain / lineage" htmlFor="strain">
+                <TextInput
+                  id="strain"
+                  value={form.strainName}
+                  onChange={(e) => set("strainName", e.target.value)}
+                  placeholder="e.g. GMO × Sherb"
+                />
+              </Field>
 
               <Field label="Description" htmlFor="description">
                 <TextArea

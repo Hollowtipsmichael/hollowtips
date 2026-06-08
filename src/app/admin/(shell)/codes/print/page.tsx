@@ -28,7 +28,10 @@ export default async function PrintCodesPage({
 
   const codes = await prisma.verificationCode.findMany({
     where,
-    include: { product: { select: { name: true, strainName: true } } },
+    include: {
+      product: { select: { name: true, productType: true } },
+      variant: { select: { name: true } },
+    },
     orderBy: { createdAt: "desc" },
     take: MAX,
   });
@@ -37,7 +40,7 @@ export default async function PrintCodesPage({
     codes.map(async (c) => ({
       code: c.code,
       product: c.product.name,
-      strain: c.product.strainName,
+      strain: c.variant?.name ?? c.product.productType ?? null,
       qr: await QRCode.toDataURL(verifyUrl(c.code, base), {
         errorCorrectionLevel: "H",
         width: 240,

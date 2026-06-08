@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { codeQuery, type CodeFilters } from "@/lib/codeFilters";
 
 export function PaginationControls({
-  filters,
+  page,
+  perPage,
   total,
+  makeHref,
 }: {
-  filters: CodeFilters;
+  page: number;
+  perPage: number;
   total: number;
+  makeHref: (page: number) => string;
 }) {
-  const { page, perPage } = filters;
   const totalPages = Math.max(1, Math.ceil(total / perPage));
   const from = total === 0 ? 0 : (page - 1) * perPage + 1;
   const to = Math.min(page * perPage, total);
-
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
 
@@ -34,7 +35,7 @@ export function PaginationControls({
           </span>
         ) : (
           <Link
-            href={`/admin/codes${codeQuery({ ...filters, page: page - 1 })}`}
+            href={makeHref(page - 1)}
             className={`${btn} text-muted hover:border-gold/40 hover:text-gold`}
           >
             <ChevronLeft className="h-4 w-4" /> Prev
@@ -49,7 +50,7 @@ export function PaginationControls({
           </span>
         ) : (
           <Link
-            href={`/admin/codes${codeQuery({ ...filters, page: page + 1 })}`}
+            href={makeHref(page + 1)}
             className={`${btn} text-muted hover:border-gold/40 hover:text-gold`}
           >
             Next <ChevronRight className="h-4 w-4" />

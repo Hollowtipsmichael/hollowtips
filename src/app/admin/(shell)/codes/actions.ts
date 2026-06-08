@@ -18,6 +18,7 @@ async function requireAdmin() {
 
 export async function generateCodes(
   productId: string,
+  variantId: string | null,
   quantity: number,
 ): Promise<ActionResult> {
   await requireAdmin();
@@ -29,9 +30,17 @@ export async function generateCodes(
 
   const product = await prisma.product.findUnique({
     where: { id: productId },
-    select: { id: true },
+    select: { id: true, variants: { where: { isActive: true }, select: { id: true } } },
   });
   if (!product) return { error: "Product not found." };
+
+  // Variant required when the product has active variants.
+  if (product.variants.length > 0 && !variantId) {
+    return { error: "Choose a variant for this product." };
+  }
+  if (variantId && !product.variants.some((v) => v.id === variantId)) {
+    return { error: "Selected variant does not belong to this product." };
+  }
 
   // SQLite's createMany doesn't support skipDuplicates, so we generate candidate
   // codes, filter out any that already exist, insert the rest, and top up across
@@ -57,6 +66,7 @@ export async function generateCodes(
         data: fresh.map((code) => ({
           code,
           productId,
+          variantId: variantId ?? null,
           status: CodeStatus.UNUSED,
         })),
       });

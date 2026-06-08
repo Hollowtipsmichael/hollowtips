@@ -3,6 +3,7 @@ import { CodeStatus } from "@/lib/enums";
 
 export interface CodeFilters {
   product?: string;
+  variant?: string;
   status?: CodeStatus;
   q?: string;
   page: number;
@@ -19,6 +20,7 @@ function first(v: string | string[] | undefined): string | undefined {
 
 export function parseCodeFilters(params: SearchParams): CodeFilters {
   const product = first(params.product)?.trim() || undefined;
+  const variant = first(params.variant)?.trim() || undefined;
   const statusRaw = first(params.status)?.trim().toUpperCase();
   const status =
     statusRaw && statusRaw in CodeStatus
@@ -34,6 +36,7 @@ export function parseCodeFilters(params: SearchParams): CodeFilters {
 
   return {
     product,
+    variant,
     status,
     q,
     page: Number.isFinite(pageNum) && pageNum > 0 ? pageNum : 1,
@@ -46,6 +49,7 @@ export function buildCodeWhere(
 ): Prisma.VerificationCodeWhereInput {
   const where: Prisma.VerificationCodeWhereInput = {};
   if (filters.product) where.productId = filters.product;
+  if (filters.variant) where.variantId = filters.variant;
   if (filters.status) where.status = filters.status;
   if (filters.q) where.code = { contains: filters.q };
   return where;
@@ -57,6 +61,7 @@ export function codeQuery(
 ): string {
   const sp = new URLSearchParams();
   if (filters.product) sp.set("product", filters.product);
+  if (filters.variant) sp.set("variant", filters.variant);
   if (filters.status) sp.set("status", filters.status);
   if (filters.q) sp.set("q", filters.q);
   if (filters.page && filters.page > 1) sp.set("page", String(filters.page));

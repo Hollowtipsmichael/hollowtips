@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, UnifrakturCook } from "next/font/google";
+import { Inter, UnifrakturCook, Anton } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 
@@ -18,6 +18,14 @@ const display = UnifrakturCook({
   display: "swap",
 });
 
+// Condensed bold display for the GTA-styled public pages (Pricedown-alike).
+const gta = Anton({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-gta",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Hollowtips Verify",
   description: "Premium QR product verification — Hollowtips admin.",
@@ -33,7 +41,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={`${inter.variable} ${display.variable} font-sans`}>
+      <body
+        className={`${inter.variable} ${display.variable} ${gta.variable} font-sans`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -27,6 +27,7 @@ model Product {
   name            String
   slug            String   @unique
   strainName      String?
+  productType     String? // INDICA | SATIVA | HYBRID (packaging badge)
   description     String?
   videoUrl        String?
   artworkUrl      String?
@@ -38,9 +39,31 @@ model Product {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  variants          ProductVariant[]
   verificationCodes VerificationCode[]
   scanEvents        ScanEvent[]
   emailCaptures     EmailCapture[]
+}
+
+// ─── Variants (flavors) ────────────────────────────────────
+// A product can have multiple variants; verification codes are generated per
+// variant. Each variant can carry its own strain + artwork for the verify page.
+model ProductVariant {
+  id              String   @id @default(cuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name            String
+  strainName      String?
+  productType     String? // optional override of Product.productType
+  artworkUrl      String?
+  productImageUrl String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  verificationCodes VerificationCode[]
+
+  @@index([productId])
 }
 
 // ─── Verification ──────────────────────────────────────────
@@ -51,18 +74,21 @@ model Product {
 // CodeStatus values: "UNUSED" | "VERIFIED" | "FLAGGED"
 model VerificationCode {
   id             String    @id @default(cuid())
-  code           String    @unique
+  code           String          @unique
   productId      String
-  product        Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  status         String    @default("UNUSED") // CodeStatus
+  product        Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId      String?
+  variant        ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  status         String          @default("UNUSED") // CodeStatus
   firstScannedAt DateTime?
-  scanCount      Int       @default(0)
-  createdAt      DateTime  @default(now())
+  scanCount      Int             @default(0)
+  createdAt      DateTime        @default(now())
 
   scanEvents ScanEvent[]
 
   @@index([code])
   @@index([productId])
+  @@index([variantId])
 }
 
 // ─── Scans ─────────────────────────────────────────────────

@@ -29,16 +29,20 @@ export async function GET(req: Request) {
 
   const codes = await prisma.verificationCode.findMany({
     where,
-    include: { product: { select: { name: true } } },
+    include: {
+      product: { select: { name: true } },
+      variant: { select: { name: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 
-  const header = "code,verifyUrl,product,status,scanCount,createdAt";
+  const header = "code,verifyUrl,product,variant,status,scanCount,createdAt";
   const rows = codes.map((c) =>
     [
       c.code,
       verifyUrl(c.code, base),
       c.product.name,
+      c.variant?.name ?? "",
       c.status,
       String(c.scanCount),
       c.createdAt.toISOString(),

@@ -28,12 +28,23 @@ export default async function CodesPage({
   const [products, total, codes] = await Promise.all([
     prisma.product.findMany({
       orderBy: { name: "asc" },
-      select: { id: true, name: true },
+      select: {
+        id: true,
+        name: true,
+        variants: {
+          where: { isActive: true },
+          orderBy: { createdAt: "asc" },
+          select: { id: true, name: true },
+        },
+      },
     }),
     prisma.verificationCode.count({ where }),
     prisma.verificationCode.findMany({
       where,
-      include: { product: { select: { name: true } } },
+      include: {
+        product: { select: { name: true } },
+        variant: { select: { name: true } },
+      },
       orderBy: { createdAt: "desc" },
       skip: (filters.page - 1) * filters.perPage,
       take: filters.perPage,
@@ -186,7 +197,14 @@ export default async function CodesPage({
                     <td className="px-4 py-3 text-muted">
                       <span className="inline-flex items-center gap-1.5">
                         <Package className="h-3.5 w-3.5 text-gold/60" />
-                        {c.product.name}
+                        <span>
+                          {c.product.name}
+                          {c.variant && (
+                            <span className="block text-[11px] text-muted/70">
+                              {c.variant.name}
+                            </span>
+                          )}
+                        </span>
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -207,7 +225,14 @@ export default async function CodesPage({
         </div>
       )}
 
-      {total > 0 && <PaginationControls filters={filters} total={total} />}
+      {total > 0 && (
+        <PaginationControls
+          page={filters.page}
+          perPage={filters.perPage}
+          total={total}
+          makeHref={(p) => `/admin/codes${codeQuery({ ...filters, page: p })}`}
+        />
+      )}
     </div>
   );
 }

@@ -33,6 +33,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "Georgia", "serif"],
+        gta: ["var(--font-gta)", "Impact", "sans-serif"],
       },
       borderRadius: {
         xl: "0.875rem",

@@ -15,10 +15,17 @@ const optionalUrl = z
   .optional()
   .or(z.literal("").transform(() => undefined));
 
+// INDICA | SATIVA | HYBRID (or empty)
+const optionalType = z
+  .enum(["INDICA", "SATIVA", "HYBRID"])
+  .optional()
+  .or(z.literal("").transform(() => undefined));
+
 export const productSchema = z.object({
   name: z.string().trim().min(1, "Name is required.").max(120),
   slug: optionalText, // optional manual override; slugified server-side
   strainName: optionalText,
+  productType: optionalType,
   description: optionalText,
   ingredients: optionalText,
   warningText: optionalText,
@@ -41,3 +48,14 @@ export const productSchema = z.object({
 
 export type ProductInput = z.input<typeof productSchema>;
 export type ProductParsed = z.output<typeof productSchema>;
+
+export const variantSchema = z.object({
+  name: z.string().trim().min(1, "Variant name is required.").max(120),
+  strainName: optionalText,
+  productType: optionalType,
+  artworkUrl: optionalText,
+  productImageUrl: optionalText,
+  isActive: z.boolean().default(true),
+});
+
+export type VariantInput = z.input<typeof variantSchema>;
