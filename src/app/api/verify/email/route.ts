@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 const schema = z.object({
   email: z.string().trim().email(),
+  name: z.string().trim().max(120).optional(),
   productId: z.string().optional(),
 });
 
@@ -34,7 +35,11 @@ export async function POST(req: Request) {
   }
 
   await prisma.emailCapture.create({
-    data: { email: parsed.data.email.toLowerCase(), productId },
+    data: {
+      email: parsed.data.email.toLowerCase(),
+      name: parsed.data.name?.trim() || null,
+      productId,
+    },
   });
 
   return NextResponse.json({ ok: true });

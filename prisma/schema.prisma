@@ -118,6 +118,7 @@ model ScanEvent {
 model EmailCapture {
   id         String   @id @default(cuid())
   email      String
+  name       String?
   productId  String?
   product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   capturedAt DateTime @default(now())

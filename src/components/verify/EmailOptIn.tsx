@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Loader2, Check, Mail } from "lucide-react";
 
 export function EmailOptIn({ productId }: { productId?: string }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "loading" | "done" | "error">(
     "idle",
@@ -18,7 +19,7 @@ export function EmailOptIn({ productId }: { productId?: string }) {
       const res = await fetch("/api/verify/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, productId }),
+        body: JSON.stringify({ name, email, productId }),
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
@@ -35,16 +36,26 @@ export function EmailOptIn({ productId }: { productId?: string }) {
     return (
       <div className="flex items-center justify-center gap-2 rounded-xl border border-graffiti-lime/30 bg-graffiti-lime/10 px-4 py-3 text-sm text-graffiti-lime">
         <Check className="h-4 w-4" />
-        You&apos;re on the list — drops incoming.
+        You&apos;re in — Hollowtips Rewards &amp; drops incoming.
       </div>
     );
   }
 
   return (
-    <form onSubmit={submit} className="space-y-2">
-      <p className="text-center text-xs uppercase tracking-[0.25em] text-white/50">
-        Get the next drop first
+    <form onSubmit={submit} className="space-y-2 rounded-2xl border border-gold/20 bg-black/30 p-4">
+      <p className="text-center font-gta text-lg uppercase tracking-wide text-gold-gradient">
+        Join Hollowtips Rewards
       </p>
+      <p className="text-center text-xs text-white/50">
+        Earn perks &amp; get the next drop first.
+      </p>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name (optional)"
+        className="w-full rounded-xl border border-white/15 bg-black/40 px-3 py-2.5 text-white placeholder:text-white/40 focus:border-gold focus:outline-none"
+      />
       <div className="flex gap-2">
         <div className="relative flex-1">
           <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
@@ -65,7 +76,7 @@ export function EmailOptIn({ productId }: { productId?: string }) {
           {state === "loading" ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            "Notify me"
+            "Join"
           )}
         </button>
       </div>

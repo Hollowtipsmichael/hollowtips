@@ -12,6 +12,7 @@ import { CopyButton } from "@/components/admin/codes/CopyButton";
 import { CodeRowActions } from "@/components/admin/codes/CodeRowActions";
 import { PaginationControls } from "@/components/admin/codes/PaginationControls";
 import { GenerateCodesDialog } from "@/components/admin/codes/GenerateCodesDialog";
+import { ImportCodesDialog } from "@/components/admin/codes/ImportCodesDialog";
 
 export const metadata = { title: "Codes — Hollowtips Verify" };
 export const dynamic = "force-dynamic";
@@ -99,6 +100,7 @@ export default async function CodesPage({
             <Printer className="h-4 w-4" />
             Print labels
           </Link>
+          <ImportCodesDialog />
           <GenerateCodesDialog
             products={products}
             defaultProductId={filters.product}

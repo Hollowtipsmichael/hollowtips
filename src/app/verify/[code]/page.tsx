@@ -29,14 +29,16 @@ function ResultBanner({
 }: {
   title: string;
   subtitle: string;
-  tone: "pass" | "wasted" | "busted";
+  tone: "pass" | "wasted" | "busted" | "caution";
 }) {
   const cls =
     tone === "pass"
       ? "text-gold-gradient"
       : tone === "wasted"
         ? "text-red-500"
-        : "text-sky-400";
+        : tone === "caution"
+          ? "text-amber-400"
+          : "text-sky-400";
   return (
     <div className="text-center">
       <h1
@@ -121,6 +123,10 @@ export default async function VerifyPage({
   const social = parseSocialLinks(product.socialLinks);
   const firstActivation = record.firstScannedAt === null;
 
+  const firstScannedLabel = record.firstScannedAt
+    ? record.firstScannedAt.toLocaleDateString()
+    : null;
+
   return (
     <Shell>
       <ScanBeacon code={code} />
@@ -128,7 +134,25 @@ export default async function VerifyPage({
         <HollowtipsLogo variant="full" size={40} />
       </div>
 
-      <ResultBanner title="Mission Passed" subtitle="Authentic" tone="pass" />
+      {firstActivation ? (
+        <ResultBanner title="Mission Passed" subtitle="Authentic" tone="pass" />
+      ) : (
+        <ResultBanner
+          title="Already Activated"
+          subtitle="Caution"
+          tone="caution"
+        />
+      )}
+
+      {/* Repeat-scan counterfeit caution */}
+      {!firstActivation && (
+        <div className="mt-5 w-full rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-center text-sm text-amber-200">
+          This code was first activated
+          {firstScannedLabel ? ` on ${firstScannedLabel}` : ""} and has been
+          scanned {record.scanCount + 1}×. If you <strong>just</strong> scratched
+          this panel, your product may be counterfeit — contact Hollowtips.
+        </div>
+      )}
 
       {/* Stats strip (GTA mission-complete style) */}
       <div className="mt-6 grid w-full grid-cols-2 gap-2 text-center">
@@ -227,7 +251,14 @@ export default async function VerifyPage({
         <EmailOptIn productId={product.id} />
       </div>
 
-      <p className="mt-8 text-center text-[11px] text-white/30">
+      <a
+        href="/verify"
+        className="mt-6 text-xs text-white/40 underline-offset-4 transition-colors hover:text-gold hover:underline"
+      >
+        ← Enter a different code
+      </a>
+
+      <p className="mt-6 text-center text-[11px] text-white/30">
         Scratch &amp; scan · © {new Date().getFullYear()} Hollowtips
       </p>
     </Shell>

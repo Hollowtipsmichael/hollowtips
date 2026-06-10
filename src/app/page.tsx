@@ -31,7 +31,7 @@ export default async function LandingPage() {
       {/* Header */}
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6">
         <HollowtipsLogo variant="full" size={34} />
-        <a href="#verify" className="btn-gold focus-gold text-sm">
+        <a href="/verify" className="btn-gold focus-gold text-sm">
           <ShieldCheck className="h-4 w-4" />
           Verify
         </a>
@@ -55,7 +55,7 @@ export default async function LandingPage() {
             Explore the lineup
           </a>
           <a
-            href="#verify"
+            href="/verify"
             className="focus-gold inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-2.5 text-sm font-semibold text-white/80 transition-colors hover:border-gold/50 hover:text-gold"
           >
             Verify your product <ArrowRight className="h-4 w-4" />
@@ -143,6 +143,10 @@ export default async function LandingPage() {
               </div>
             ))}
           </div>
+          <a href="/verify" className="btn-gold focus-gold mt-8 inline-flex">
+            <QrCode className="h-4 w-4" />
+            Verify now
+          </a>
         </div>
       </section>
 

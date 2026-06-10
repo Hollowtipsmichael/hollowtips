@@ -4,6 +4,7 @@ import { CodeStatus } from "@/lib/enums";
 import { clientIp } from "@/lib/ip";
 import { detectDevice } from "@/lib/device";
 import { lookupGeo } from "@/lib/geo";
+import { FLAG_DISTINCT_IP_THRESHOLD } from "@/lib/code";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -59,8 +60,26 @@ export async function POST(req: Request) {
     }),
   ]);
 
+  // Counterfeit heuristic: a genuine code copied onto many fakes gets scanned
+  // from many different IPs. If distinct-IP count crosses the threshold, flag it.
+  let flagged = false;
+  if (!isFirstScan && ip) {
+    const distinct = await prisma.scanEvent.findMany({
+      where: { codeId: record.id, ipAddress: { not: null } },
+      distinct: ["ipAddress"],
+      select: { ipAddress: true },
+    });
+    if (distinct.length > FLAG_DISTINCT_IP_THRESHOLD) {
+      await prisma.verificationCode.update({
+        where: { id: record.id },
+        data: { status: CodeStatus.FLAGGED },
+      });
+      flagged = true;
+    }
+  }
+
   return NextResponse.json({
-    status: "authentic",
+    status: flagged ? "flagged" : "authentic",
     firstScan: isFirstScan,
     scanCount: record.scanCount + 1,
   });

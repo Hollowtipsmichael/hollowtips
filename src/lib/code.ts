@@ -15,6 +15,13 @@ export function generateCodeString(): string {
   return PREFIX + out;
 }
 
+/**
+ * A code scanned from more than this many DISTINCT IPs is auto-flagged as a
+ * likely clone (the same code copied onto many counterfeit units). A single
+ * owner re-checking from one network won't trip it.
+ */
+export const FLAG_DISTINCT_IP_THRESHOLD = 5;
+
 /** The public verification URL a QR/scan resolves to (page built in Module 4). */
 export function verifyUrl(code: string, base?: string): string {
   const origin = (base || process.env.NEXTAUTH_URL || "").replace(/\/$/, "");

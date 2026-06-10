@@ -57,6 +57,7 @@ export default async function EmailsPage() {
               <thead>
                 <tr className="border-b border-subtle text-left text-xs uppercase tracking-wide text-muted">
                   <th className="px-4 py-3 font-medium">Email</th>
+                  <th className="px-4 py-3 font-medium">Name</th>
                   <th className="px-4 py-3 font-medium">Product</th>
                   <th className="px-4 py-3 font-medium">Captured</th>
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
@@ -69,6 +70,7 @@ export default async function EmailsPage() {
                     className="border-b border-subtle/60 last:border-0 hover:bg-panel-raised/40"
                   >
                     <td className="px-4 py-3 text-fg">{e.email}</td>
+                    <td className="px-4 py-3 text-muted">{e.name ?? "—"}</td>
                     <td className="px-4 py-3 text-muted">
                       <span className="inline-flex items-center gap-1.5">
                         <Package className="h-3.5 w-3.5 text-gold/60" />
