@@ -2,6 +2,7 @@ import { ShieldCheck, QrCode, Sparkles, ArrowRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { AgeGate } from "@/components/public/AgeGate";
+import { CodeEntryForm } from "@/components/verify/CodeEntryForm";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
@@ -143,10 +144,20 @@ export default async function LandingPage() {
               </div>
             ))}
           </div>
-          <a href="/verify" className="btn-gold focus-gold mt-8 inline-flex">
-            <QrCode className="h-4 w-4" />
-            Verify now
-          </a>
+
+          {/* Verify right here on the homepage */}
+          <div className="mx-auto mt-8 max-w-sm rounded-2xl border border-gold/20 bg-black/40 p-5">
+            <p className="mb-3 text-xs uppercase tracking-[0.25em] text-white/50">
+              Enter your scratch-off code
+            </p>
+            <CodeEntryForm />
+            <a
+              href="/verify"
+              className="mt-3 inline-block text-xs text-white/40 underline-offset-4 hover:text-gold hover:underline"
+            >
+              Open full verify page →
+            </a>
+          </div>
         </div>
       </section>
 
