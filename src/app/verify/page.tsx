@@ -1,4 +1,5 @@
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
+import { MatrixRain } from "@/components/brand/MatrixRain";
 import { CodeEntryForm } from "@/components/verify/CodeEntryForm";
 
 export const metadata = { title: "Verify — Hollowtips" };
@@ -6,10 +7,15 @@ export const metadata = { title: "Verify — Hollowtips" };
 export default function VerifyEntryPage() {
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-black px-5 py-10 text-white">
-      <div className="grain pointer-events-none absolute inset-0" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(212,175,55,0.12),transparent_55%)]" />
+      {/* Cinematic HOLLOWTIPS code-rain backdrop (same as admin login) */}
+      <div className="absolute inset-0 z-0">
+        <MatrixRain opacity={0.45} />
+      </div>
+      {/* radial gold glow + vignette so the card stays legible */}
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)]" />
 
-      <div className="relative z-10 w-full max-w-sm text-center">
+      <div className="relative z-20 w-full max-w-sm animate-fade-in text-center">
         <div className="mb-8 flex justify-center">
           <HollowtipsLogo variant="full" size={44} />
         </div>
@@ -22,11 +28,11 @@ export default function VerifyEntryPage() {
           hidden code below to confirm it&apos;s authentic.
         </p>
 
-        <div className="mt-8">
+        <div className="mt-8 rounded-2xl border border-gold/20 bg-[#0c0c0c]/80 p-6 shadow-gold-glow backdrop-blur-xl">
           <CodeEntryForm />
         </div>
 
-        <p className="mt-8 text-[11px] text-white/30">
+        <p className="mt-8 text-[11px] text-white/40">
           21+ only · © {new Date().getFullYear()} Hollowtips
         </p>
       </div>
