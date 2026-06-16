@@ -22,7 +22,7 @@ const RULES: Record<
   { maxBytes: number; types: Record<string, string> }
 > = {
   image: {
-    maxBytes: 5 * 1024 * 1024, // 5MB
+    maxBytes: 10 * 1024 * 1024, // 10MB
     types: {
       "image/png": "png",
       "image/jpeg": "jpg",
