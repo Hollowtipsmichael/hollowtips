@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Upload, X, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
@@ -19,6 +20,8 @@ export function ImportCodesDialog() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<ImportResult | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   async function onFile(file: File) {
     setBusy(true);
@@ -54,7 +57,7 @@ export function ImportCodesDialog() {
         Import CSV
       </button>
 
-      {open && (
+      {open && mounted && createPortal(
         <div className="fixed inset-0 z-[60] grid place-items-center p-4">
           <div
             onClick={() => !busy && setOpen(false)}
@@ -147,7 +150,8 @@ export function ImportCodesDialog() {
               }}
             />
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

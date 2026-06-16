@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus, X, Sparkles, AlertCircle } from "lucide-react";
 import { generateCodes } from "@/app/admin/(shell)/codes/actions";
@@ -32,6 +33,8 @@ export function GenerateCodesDialog({
   const [quantity, setQuantity] = useState("50");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const qty = parseInt(quantity || "0", 10) || 0;
   const selectedProduct = products.find((p) => p.id === productId);
@@ -74,7 +77,7 @@ export function GenerateCodesDialog({
         Generate codes
       </button>
 
-      {open && (
+      {open && mounted && createPortal(
         <div className="fixed inset-0 z-[60] grid place-items-center p-4">
           <div
             onClick={() => !pending && setOpen(false)}
@@ -204,7 +207,8 @@ export function GenerateCodesDialog({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );
