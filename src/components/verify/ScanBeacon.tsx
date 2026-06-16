@@ -1,26 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 /**
- * Fires a single scan event for this code on mount. Side-effect is kept out of
- * the server render so bots/prefetch (no JS) don't inflate scan counts.
- * Uses sessionStorage so a refresh in the same session doesn't double-count.
+ * Records one scan per page load (JS-only, so bots/link-previews don't count),
+ * then refreshes the page so the displayed status/scan-count reflect the DB.
  */
 export function ScanBeacon({ code }: { code: string }) {
+  const router = useRouter();
+  const fired = useRef(false);
+
   useEffect(() => {
-    const key = `ht-scanned-${code}`;
-    if (sessionStorage.getItem(key)) return;
-    sessionStorage.setItem(key, "1");
+    if (fired.current) return; // once per mount (guards React StrictMode)
+    fired.current = true;
     fetch("/api/verify/scan", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code }),
-      keepalive: true,
-    }).catch(() => {
-      // best-effort; ignore network errors
-    });
-  }, [code]);
+    })
+      .then(() => router.refresh())
+      .catch(() => {});
+  }, [code, router]);
 
   return null;
 }

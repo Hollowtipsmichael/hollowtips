@@ -8,7 +8,7 @@ import {
   codeQuery,
 } from "@/lib/codeFilters";
 import { CodeStatusBadge } from "@/components/admin/codes/CodeStatusBadge";
-import { CopyButton } from "@/components/admin/codes/CopyButton";
+import { CodeScansDialog } from "@/components/admin/codes/CodeScansDialog";
 import { CodeRowActions } from "@/components/admin/codes/CodeRowActions";
 import { PaginationControls } from "@/components/admin/codes/PaginationControls";
 import { GenerateCodesDialog } from "@/components/admin/codes/GenerateCodesDialog";
@@ -191,10 +191,7 @@ export default async function CodesPage({
                     className="border-b border-subtle/60 last:border-0 hover:bg-panel-raised/40"
                   >
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-fg">{c.code}</span>
-                        <CopyButton value={c.code} />
-                      </div>
+                      <CodeScansDialog code={c.code} codeId={c.id} />
                     </td>
                     <td className="px-4 py-3 text-muted">
                       <span className="inline-flex items-center gap-1.5">
@@ -210,7 +207,14 @@ export default async function CodesPage({
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <CodeStatusBadge status={c.status} />
+                      {c.status === "FLAGGED" && c.firstScannedAt ? (
+                        <span className="flex flex-wrap gap-1">
+                          <CodeStatusBadge status="VERIFIED" />
+                          <CodeStatusBadge status="FLAGGED" />
+                        </span>
+                      ) : (
+                        <CodeStatusBadge status={c.status} />
+                      )}
                     </td>
                     <td className="px-4 py-3 text-muted">{c.scanCount}</td>
                     <td className="px-4 py-3 text-muted">
