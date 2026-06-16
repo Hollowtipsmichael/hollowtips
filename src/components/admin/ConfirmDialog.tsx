@@ -49,7 +49,7 @@ export function ConfirmDialog({
         role="alertdialog"
         aria-modal="true"
         aria-label={title}
-        className="relative z-10 w-full max-w-md animate-fade-in rounded-2xl border border-subtle bg-panel p-6 shadow-panel"
+        className="relative z-10 w-full max-w-md rounded-2xl border border-subtle bg-panel p-6 shadow-panel"
       >
         <div className="flex items-start gap-3">
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-red-500/30 bg-red-500/10 text-red-400">

@@ -87,7 +87,7 @@ export function GenerateCodesDialog({
             role="dialog"
             aria-modal="true"
             aria-label="Generate codes"
-            className="relative z-10 w-full max-w-md animate-fade-in rounded-2xl border border-subtle bg-panel p-6 shadow-panel"
+            className="relative z-10 w-full max-w-md rounded-2xl border border-subtle bg-panel p-6 shadow-panel"
           >
             <div className="mb-5 flex items-start justify-between gap-4">
               <div className="flex items-center gap-3">

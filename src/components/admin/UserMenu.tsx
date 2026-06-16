@@ -65,7 +65,7 @@ export function UserMenu({ name, email }: UserMenuProps) {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-56 animate-fade-in overflow-hidden rounded-xl border border-subtle bg-panel-raised shadow-panel"
+          className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-subtle bg-panel-raised shadow-panel"
         >
           <div className="border-b border-subtle px-4 py-3">
             <p className="truncate text-sm font-semibold text-fg">{name}</p>

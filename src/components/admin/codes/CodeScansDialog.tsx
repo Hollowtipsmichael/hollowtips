@@ -66,7 +66,7 @@ export function CodeScansDialog({ code, codeId }: { code: string; codeId: string
               role="dialog"
               aria-modal="true"
               aria-label="Scan history"
-              className="relative z-10 max-h-[85vh] w-full max-w-2xl animate-fade-in overflow-hidden rounded-2xl border border-subtle bg-panel shadow-panel"
+              className="relative z-10 max-h-[85vh] w-full max-w-2xl overflow-hidden rounded-2xl border border-subtle bg-panel shadow-panel"
             >
               <div className="flex items-center justify-between border-b border-subtle px-5 py-4">
                 <div>
@@ -101,6 +101,7 @@ export function CodeScansDialog({ code, codeId }: { code: string; codeId: string
                     <thead>
                       <tr className="border-b border-subtle text-left text-xs uppercase tracking-wide text-muted">
                         <th className="px-4 py-3 font-medium">#</th>
+                        <th className="px-4 py-3 font-medium">Result</th>
                         <th className="px-4 py-3 font-medium">When</th>
                         <th className="px-4 py-3 font-medium">Location</th>
                         <th className="px-4 py-3 font-medium">IP address</th>
@@ -113,11 +114,15 @@ export function CodeScansDialog({ code, codeId }: { code: string; codeId: string
                           key={s.n}
                           className="border-b border-subtle/60 last:border-0"
                         >
+                          <td className="px-4 py-3 font-medium text-fg">{s.n}</td>
                           <td className="px-4 py-3">
-                            <span className="font-medium text-fg">{s.n}</span>
-                            {s.first && (
-                              <span className="ml-1.5 rounded-full border border-graffiti-lime/30 bg-graffiti-lime/10 px-1.5 py-0.5 text-[10px] text-graffiti-lime">
-                                first
+                            {s.first ? (
+                              <span className="inline-flex items-center gap-1 rounded-full border border-graffiti-lime/30 bg-graffiti-lime/10 px-2 py-0.5 text-xs font-medium text-graffiti-lime">
+                                Verified
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 rounded-full border border-graffiti-pink/30 bg-graffiti-pink/10 px-2 py-0.5 text-xs font-medium text-graffiti-pink">
+                                Flagged
                               </span>
                             )}
                           </td>
