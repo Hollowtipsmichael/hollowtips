@@ -18,19 +18,17 @@ interface MatrixRainProps {
 
 /**
  * Cinematic "Matrix" code-rain backdrop — gold-forward.
- * Some columns stand STILL and boldly spell "HOLLOWTIPS" top-to-bottom
- * (readable), while the rest RUN as dimmer falling code, with occasional
- * green glints and a few bright gold vertical light-streaks.
- *
- * DPR-aware, time-based stepping, pauses when hidden, honours reduced-motion.
+ * Some columns stand STILL and clearly spell "HOLLOWTIPS" top-to-bottom
+ * (bold, bright, gap-separated so it reads as the word), while the rest RUN
+ * as falling code with occasional green glints.
  */
 export function MatrixRain({
   className = "",
-  opacity = 0.5,
-  fontSize = 16,
-  fade = 0.09,
-  speed = 60,
-  wordColumnRatio = 0.25,
+  opacity = 0.7,
+  fontSize = 18,
+  fade = 0.08,
+  speed = 70,
+  wordColumnRatio = 0.3,
 }: MatrixRainProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -41,10 +39,11 @@ export function MatrixRain({
     if (!ctx) return;
 
     const GOLD = "#D4AF37";
-    const GOLD_BRIGHT = "#F5D061";
-    const GOLD_DIM = "#8a6f1f";
+    const GOLD_BRIGHT = "#FCE38A";
     const GREEN = "#7CFFB2";
     const WORD = "HOLLOWTIPS";
+    const GAP = 3; // blank rows between word repeats so the word is readable
+    const CYCLE = WORD.length + GAP;
     const RAIN_CHARS = "HOLLOWTIPS0123456789".split("");
 
     let width = 0;
@@ -55,11 +54,9 @@ export function MatrixRain({
     let frame = 0;
 
     type Col = {
-      word: boolean; // static HOLLOWTIPS column
-      drop: number; // head row (rain columns)
-      streak: boolean; // gold light-beam behind a word column
-      offset: number; // vertical phase for word letters
-      bright: number; // per-column brightness 0.5–1
+      word: boolean;
+      drop: number;
+      offset: number;
     };
     let cols: Col[] = [];
 
@@ -71,18 +68,15 @@ export function MatrixRain({
       canvas.height = Math.floor(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       columns = Math.max(1, Math.floor(width / fontSize));
-      rows = Math.ceil(height / fontSize) + 1;
+      rows = Math.ceil(height / fontSize) + 2;
 
-      cols = Array.from({ length: columns }, () => {
-        const word = Math.random() < wordColumnRatio;
-        return {
-          word,
-          drop: Math.floor((Math.random() * -height) / fontSize),
-          streak: word && Math.random() < 0.35,
-          offset: Math.floor(Math.random() * WORD.length),
-          bright: 0.5 + Math.random() * 0.5,
-        };
-      });
+      // Evenly space the static word columns so they don't clump.
+      const every = Math.max(2, Math.round(1 / Math.min(0.5, wordColumnRatio)));
+      cols = Array.from({ length: columns }, (_, i) => ({
+        word: i % every === 1,
+        drop: Math.floor((Math.random() * -height) / fontSize),
+        offset: Math.floor(Math.random() * CYCLE),
+      }));
 
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, width, height);
@@ -90,63 +84,54 @@ export function MatrixRain({
 
     const draw = () => {
       frame++;
-      // Fade previous frame (creates trails for running columns).
       ctx.fillStyle = `rgba(0, 0, 0, ${fade})`;
       ctx.fillRect(0, 0, width, height);
       ctx.textBaseline = "top";
+      ctx.textAlign = "center";
 
       for (let i = 0; i < columns; i++) {
         const col = cols[i];
-        const x = i * fontSize;
+        const cx = i * fontSize + fontSize / 2;
 
         if (col.word) {
-          // Faint gold light-beam behind some word columns.
-          if (col.streak) {
-            ctx.fillStyle = "rgba(245, 208, 97, 0.05)";
-            ctx.fillRect(x - 1, 0, fontSize + 2, height);
-          }
-          // Static, bold, readable HOLLOWTIPS down the whole column.
+          // Static, bold, bright HOLLOWTIPS — clearly readable, gap-separated.
           ctx.font = `700 ${fontSize}px "Courier New", monospace`;
-          // gentle shimmer so it's alive but still readable
-          const pulse = 0.8 + 0.2 * Math.sin(frame / 18 + i);
+          // one bright lead glyph slides down for life
+          const lead = Math.floor(frame / 3) % rows;
           for (let r = 0; r < rows; r++) {
-            const ch = WORD[(r + col.offset) % WORD.length];
-            // one slowly-moving bright lead glyph per word column
-            const lead = (frame / 6 + col.offset) % rows;
-            const isLead = Math.abs(r - lead) < 0.6;
-            if (isLead) {
-              ctx.fillStyle = GOLD_BRIGHT;
+            const idx = (r + col.offset) % CYCLE;
+            if (idx >= WORD.length) continue; // gap row → blank
+            const ch = WORD[idx];
+            if (r === lead) {
+              ctx.fillStyle = "#FFFFFF";
               ctx.shadowColor = GOLD_BRIGHT;
-              ctx.shadowBlur = 12;
+              ctx.shadowBlur = 14;
             } else {
-              ctx.globalAlpha = col.bright * pulse;
-              ctx.fillStyle = col.streak ? GOLD_BRIGHT : GOLD;
+              ctx.fillStyle = GOLD_BRIGHT;
               ctx.shadowColor = GOLD;
-              ctx.shadowBlur = 6;
+              ctx.shadowBlur = 8;
             }
-            ctx.fillText(ch, x, r * fontSize);
-            ctx.globalAlpha = 1;
-            ctx.shadowBlur = 0;
+            ctx.fillText(ch, cx, r * fontSize);
           }
+          ctx.shadowBlur = 0;
         } else {
-          // Running rain — dimmer background.
+          // Running rain — visible but secondary.
           ctx.font = `${fontSize}px "Courier New", monospace`;
           const y = col.drop * fontSize;
           const ch = RAIN_CHARS[Math.floor(Math.random() * RAIN_CHARS.length)];
           const r = Math.random();
-          if (r > 0.992) {
-            ctx.fillStyle = GREEN; // rare green glint
+          if (r > 0.99) {
+            ctx.fillStyle = GREEN;
             ctx.shadowColor = GREEN;
+            ctx.shadowBlur = 8;
+          } else if (r > 0.9) {
+            ctx.fillStyle = GOLD_BRIGHT; // bright lead
+            ctx.shadowColor = GOLD;
             ctx.shadowBlur = 6;
-          } else if (r > 0.95) {
-            ctx.globalAlpha = col.bright;
-            ctx.fillStyle = GOLD; // brighter lead
           } else {
-            ctx.globalAlpha = col.bright * 0.55;
-            ctx.fillStyle = GOLD_DIM;
+            ctx.fillStyle = GOLD;
           }
-          ctx.fillText(ch, x, y);
-          ctx.globalAlpha = 1;
+          ctx.fillText(ch, cx, y);
           ctx.shadowBlur = 0;
 
           if (y > height && Math.random() > 0.975) col.drop = 0;
@@ -173,9 +158,8 @@ export function MatrixRain({
     };
 
     setup();
-
     if (prefersReduced) {
-      for (let i = 0; i < 30; i++) draw(); // static readable frame
+      for (let i = 0; i < 40; i++) draw();
     } else {
       raf = requestAnimationFrame(loop);
     }
@@ -184,7 +168,6 @@ export function MatrixRain({
       runningFlag = document.visibilityState === "visible";
     };
     const onResize = () => setup();
-
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("resize", onResize);
 

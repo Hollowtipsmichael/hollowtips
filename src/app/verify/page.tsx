@@ -9,11 +9,10 @@ export default function VerifyEntryPage() {
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-black px-5 py-10 text-white">
       {/* Cinematic HOLLOWTIPS code-rain backdrop (same as admin login) */}
       <div className="absolute inset-0 z-0">
-        <MatrixRain opacity={0.45} />
+        <MatrixRain opacity={0.85} />
       </div>
-      {/* radial gold glow + vignette so the card stays legible */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)]" />
+      {/* center-dark scrim: keeps the centered text crisp, lets side columns show */}
+      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_50%_60%_at_center,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.35)_45%,transparent_75%)]" />
 
       <div className="relative z-20 w-full max-w-sm animate-fade-in text-center">
         <div className="mb-8 flex justify-center">
