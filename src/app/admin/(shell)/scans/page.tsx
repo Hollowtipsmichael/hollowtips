@@ -113,7 +113,7 @@ export default async function ScansPage({
                   <th className="px-4 py-3 font-medium">Product</th>
                   <th className="px-4 py-3 font-medium">Location</th>
                   <th className="px-4 py-3 font-medium">Device</th>
-                  <th className="px-4 py-3 font-medium">First</th>
+                  <th className="px-4 py-3 font-medium">Result</th>
                   <th className="px-4 py-3 font-medium">When</th>
                 </tr>
               </thead>
@@ -143,11 +143,13 @@ export default async function ScansPage({
                     </td>
                     <td className="px-4 py-3">
                       {s.isFirstScan ? (
-                        <span className="rounded-full border border-graffiti-lime/30 bg-graffiti-lime/10 px-2 py-0.5 text-xs text-graffiti-lime">
-                          First
+                        <span className="inline-flex items-center gap-1 rounded-full border border-graffiti-lime/30 bg-graffiti-lime/10 px-2 py-0.5 text-xs font-medium text-graffiti-lime">
+                          Verified
                         </span>
                       ) : (
-                        <span className="text-xs text-muted/60">—</span>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-graffiti-pink/30 bg-graffiti-pink/10 px-2 py-0.5 text-xs font-medium text-graffiti-pink">
+                          Flagged
+                        </span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-muted">
