@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { Sparkles, Clapperboard } from "lucide-react";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { MatrixRain } from "@/components/brand/MatrixRain";
 import { CodeEntryForm } from "@/components/verify/CodeEntryForm";
@@ -35,12 +35,20 @@ export default function HomeVerifyPage() {
           <CodeEntryForm />
         </div>
 
-        <a
-          href="/lineup"
-          className="mt-6 inline-flex items-center gap-1.5 text-xs text-white/40 underline-offset-4 transition-colors hover:text-gold hover:underline"
-        >
-          <Sparkles className="h-3.5 w-3.5" /> Explore the lineup
-        </a>
+        <div className="mt-6 flex items-center justify-center gap-5 text-xs text-white/40">
+          <a
+            href="/lineup"
+            className="inline-flex items-center gap-1.5 underline-offset-4 transition-colors hover:text-gold hover:underline"
+          >
+            <Sparkles className="h-3.5 w-3.5" /> Explore the lineup
+          </a>
+          <a
+            href="/media"
+            className="inline-flex items-center gap-1.5 underline-offset-4 transition-colors hover:text-gold hover:underline"
+          >
+            <Clapperboard className="h-3.5 w-3.5" /> Media
+          </a>
+        </div>
 
         <p className="mt-6 text-[11px] text-white/30">
           21+ only · © {new Date().getFullYear()} Hollowtips

@@ -128,3 +128,20 @@ model EmailCapture {
 
   @@index([productId])
 }
+
+// ─── Media / Trailers ──────────────────────────────────────
+model MediaItem {
+  id           String    @id @default(cuid())
+  title        String
+  category     String // free-text; public groups into tabs
+  videoUrl     String // external (YouTube/Vimeo) URL or /uploads/<file>.mp4
+  thumbnailUrl String?
+  publishedAt  DateTime?
+  isNew        Boolean   @default(false)
+  isActive     Boolean   @default(true)
+  sortOrder    Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([category])
+}

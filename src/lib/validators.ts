@@ -51,6 +51,19 @@ export const productSchema = z.object({
 export type ProductInput = z.input<typeof productSchema>;
 export type ProductParsed = z.output<typeof productSchema>;
 
+export const mediaSchema = z.object({
+  title: z.string().trim().min(1, "Title is required.").max(160),
+  category: z.string().trim().min(1, "Category is required.").max(60),
+  videoUrl: z.string().trim().min(1, "Video URL or upload is required.").max(2000),
+  thumbnailUrl: optionalText,
+  publishedAt: optionalText, // ISO date string from <input type=date>
+  isNew: z.boolean().default(false),
+  isActive: z.boolean().default(true),
+  sortOrder: z.coerce.number().int().min(0).max(9999).default(0),
+});
+
+export type MediaInput = z.input<typeof mediaSchema>;
+
 export const variantSchema = z.object({
   name: z.string().trim().min(1, "Variant name is required.").max(120),
   strainName: optionalText,

@@ -34,10 +34,18 @@ export default async function LineupPage() {
         <a href="/">
           <HollowtipsLogo variant="full" size={34} />
         </a>
-        <a href="/verify" className="btn-gold focus-gold text-sm">
-          <ShieldCheck className="h-4 w-4" />
-          Verify
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href="/media"
+            className="text-sm font-semibold uppercase tracking-wide text-white/70 transition-colors hover:text-gold"
+          >
+            Media
+          </a>
+          <a href="/verify" className="btn-gold focus-gold text-sm">
+            <ShieldCheck className="h-4 w-4" />
+            Verify
+          </a>
+        </div>
       </header>
 
       {/* Hero — GTA loading screen */}

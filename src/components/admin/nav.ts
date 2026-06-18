@@ -5,6 +5,7 @@ import {
   ScanLine,
   BarChart3,
   Mail,
+  Clapperboard,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -22,6 +23,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Scans", href: "/admin/scans", icon: ScanLine },
   { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { label: "Emails", href: "/admin/emails", icon: Mail },
+  { label: "Media", href: "/admin/media", icon: Clapperboard },
   { label: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
