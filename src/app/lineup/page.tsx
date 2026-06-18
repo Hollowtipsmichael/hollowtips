@@ -46,7 +46,7 @@ export default async function LineupPage() {
         <p className="relative inline-block rounded-full border border-gold/30 bg-gold/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.3em] text-gold">
           Round I — V1
         </p>
-        <h1 className="relative mt-6 font-gta text-6xl uppercase leading-[0.9] tracking-wide text-gold-gradient drop-shadow-[0_3px_0_rgba(0,0,0,0.5)] sm:text-8xl">
+        <h1 className="relative mt-6 font-gta text-6xl uppercase leading-[0.9] tracking-wide text-gold-shine drop-shadow-[0_3px_0_rgba(0,0,0,0.5)] sm:text-8xl">
           Hollowtips
         </h1>
         <p className="relative mx-auto mt-4 max-w-xl text-sm uppercase tracking-[0.3em] text-white/60 sm:text-base">
@@ -123,7 +123,7 @@ export default async function LineupPage() {
           <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-gold-gradient text-black shadow-gold-glow">
             <QrCode className="h-7 w-7" />
           </span>
-          <h2 className="mt-5 font-gta text-3xl uppercase tracking-wide text-gold-gradient sm:text-4xl">
+          <h2 className="mt-5 font-gta text-3xl uppercase tracking-wide text-gold-shine sm:text-4xl">
             Scratch &amp; Scan
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm text-white/60">

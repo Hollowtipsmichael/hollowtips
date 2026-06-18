@@ -61,6 +61,22 @@
     @apply bg-gold-gradient bg-clip-text text-transparent;
   }
 
+  /* Bright polished metallic gold (matches the brand logo) — for wordmark/hero */
+  .text-gold-shine {
+    background-image: linear-gradient(
+      180deg,
+      #fcefb4 0%,
+      #f3d873 24%,
+      #e8c24a 46%,
+      #b8860b 58%,
+      #e8c24a 72%,
+      #fff3c4 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   /* Primary gold button — gradient + inner highlight + soft outer glow */
   .btn-gold {
     @apply relative inline-flex items-center justify-center gap-2 rounded-xl

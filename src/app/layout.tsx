@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   title: "Hollowtips Verify",
   description: "Premium QR product verification — Hollowtips admin.",
   icons: {
-    icon: "/brand/hollowtips-bullet.png",
+    icon: "/brand/hollowtips-logo.png",
   },
 };
 

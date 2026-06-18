@@ -1,12 +1,10 @@
-import Image from "next/image";
-
-const BULLET_SRC = "/brand/hollowtips-bullet.png";
+const LOGO_SRC = "/brand/hollowtips-logo.png";
 
 type Variant = "full" | "mark" | "wordmark";
 
 interface HollowtipsLogoProps {
   variant?: Variant;
-  /** Height of the bullet mark in px (wordmark scales with it). */
+  /** Height of the logo mark in px (wordmark scales with it). */
   size?: number;
   className?: string;
   /** Show the small "VERIFY" sub-label under the wordmark. */
@@ -14,13 +12,10 @@ interface HollowtipsLogoProps {
 }
 
 /**
- * The Hollowtips brand lockup.
- * - `full`     → gold bullet mark + blackletter wordmark
- * - `mark`     → bullet only (for the collapsed sidebar / favicons)
+ * The Hollowtips brand lockup — the real gold logo (transparent PNG).
+ * - `full`     → gold logo mark + blackletter wordmark
+ * - `mark`     → logo only (collapsed sidebar / footer / favicon)
  * - `wordmark` → blackletter text only
- *
- * The bullet PNG can later be swapped for the official SVG without touching
- * consumers of this component.
  */
 export function HollowtipsLogo({
   variant = "full",
@@ -29,25 +24,21 @@ export function HollowtipsLogo({
   withTagline = false,
 }: HollowtipsLogoProps) {
   const Mark = (
-    <span
-      className="relative inline-block shrink-0 drop-shadow-[0_0_12px_rgba(212,175,55,0.35)]"
-      style={{ height: size, width: size * 0.42 }}
-    >
-      <Image
-        src={BULLET_SRC}
-        alt="Hollowtips"
-        fill
-        sizes={`${size}px`}
-        className="object-contain"
-        priority
-      />
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={LOGO_SRC}
+      alt="Hollowtips"
+      width={size}
+      height={size}
+      className="shrink-0 object-contain drop-shadow-[0_0_14px_rgba(212,175,55,0.4)]"
+      style={{ height: size, width: size }}
+    />
   );
 
   const Wordmark = (
     <span className="flex flex-col leading-none">
       <span
-        className="font-display tracking-wide text-gold-gradient"
+        className="font-display tracking-wide text-gold-shine"
         style={{ fontSize: size * 0.72 }}
       >
         Hollowtips
@@ -71,7 +62,7 @@ export function HollowtipsLogo({
   }
 
   return (
-    <span className={`flex items-center gap-3 ${className}`}>
+    <span className={`flex items-center gap-2.5 ${className}`}>
       {Mark}
       {Wordmark}
     </span>
