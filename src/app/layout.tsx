@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, UnifrakturCook, Anton } from "next/font/google";
+import {
+  Inter,
+  UnifrakturCook,
+  Anton,
+  Barlow_Condensed,
+  Barlow,
+} from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/Providers";
 
@@ -26,6 +32,20 @@ const gta = Anton({
   display: "swap",
 });
 
+// Verify result screens (client mockup): condensed display + body.
+const condensed = Barlow_Condensed({
+  weight: ["400", "600", "700", "900"],
+  subsets: ["latin"],
+  variable: "--font-condensed",
+  display: "swap",
+});
+const barlow = Barlow({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Hollowtips Verify",
   description: "Premium QR product verification — Hollowtips admin.",
@@ -42,7 +62,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <body
-        className={`${inter.variable} ${display.variable} ${gta.variable} font-sans`}
+        className={`${inter.variable} ${display.variable} ${gta.variable} ${condensed.variable} ${barlow.variable} font-sans`}
       >
         <Providers>{children}</Providers>
       </body>

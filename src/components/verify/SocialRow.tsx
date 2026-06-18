@@ -1,10 +1,26 @@
-import { Instagram, Youtube } from "lucide-react";
 import { LINKS } from "@/lib/links";
 
-function TikTok({ className = "" }: { className?: string }) {
+function Instagram() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M16.5 3c.36 2.3 1.86 3.94 4.5 4.14v2.6c-1.53.15-2.87-.35-4.43-1.29v5.7c0 5.5-6 7.22-8.41 3.28-1.55-2.54-.6-7 4.39-7.18v2.74c-.38.06-.79.16-1.16.29-1.11.38-1.74 1.08-1.56 2.32.33 2.38 4.7 3.08 4.34-1.58V3h2.34z" />
+    <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="#E1306C" strokeWidth="2" />
+      <circle cx="12" cy="12" r="4" stroke="#E1306C" strokeWidth="2" />
+      <circle cx="17.5" cy="6.5" r="1" fill="#E1306C" />
+    </svg>
+  );
+}
+function TikTok() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" aria-hidden="true">
+      <path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function YouTube() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-[22px] w-[22px]" aria-hidden="true">
+      <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.97C5.12 20 12 20 12 20s6.88 0 8.59-.45a2.78 2.78 0 001.95-1.97A29 29 0 0023 12a29 29 0 00-.46-5.58z" stroke="#FF0000" strokeWidth="2" />
+      <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" stroke="#FF0000" strokeWidth="2" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -12,27 +28,28 @@ function TikTok({ className = "" }: { className?: string }) {
 const items = [
   { label: "Instagram", href: LINKS.instagram, Icon: Instagram },
   { label: "TikTok", href: LINKS.tiktok, Icon: TikTok },
-  { label: "YouTube", href: LINKS.youtube, Icon: Youtube },
+  { label: "YouTube", href: LINKS.youtube, Icon: YouTube },
 ];
 
 export function SocialRow() {
   return (
     <div className="w-full">
-      <p className="mb-3 text-center text-xs uppercase tracking-[0.3em] text-white/40">
+      <p className="mb-3.5 text-center font-condensed text-[11px] uppercase tracking-[3px] text-[#888]">
         Follow Hollowtips
       </p>
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex w-full gap-3">
         {items.map(({ label, href, Icon }) => (
           <a
             key={label}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={label}
-            title={label}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-gold/50 hover:text-gold"
+            className="flex flex-1 flex-col items-center gap-1.5 rounded-[10px] border border-[#222] bg-[#111] px-2 py-3.5 transition-colors hover:border-gold-deep active:scale-[0.96]"
           >
-            <Icon className="h-5 w-5" />
+            <Icon />
+            <span className="font-condensed text-[11px] uppercase tracking-[1.5px] text-[#888]">
+              {label}
+            </span>
           </a>
         ))}
       </div>

@@ -1,25 +1,24 @@
 import Link from "next/link";
-import { Gift, ArrowRight } from "lucide-react";
 import { LINKS } from "@/lib/links";
 
 export function GiveawayStrip() {
   return (
     <Link
       href={LINKS.giveaway}
-      className="group flex w-full items-center gap-3 rounded-2xl border border-gold/40 bg-gradient-to-r from-gold/15 to-transparent p-4 transition-colors hover:border-gold/70"
+      className="flex w-full items-center justify-between gap-3 rounded-xl border border-gold-deep bg-[linear-gradient(135deg,#141008_0%,#1a1200_100%)] px-5 py-4 transition-colors hover:border-gold"
     >
-      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gold-gradient text-black shadow-gold-glow">
-        <Gift className="h-5 w-5" />
-      </span>
-      <span className="min-w-0 flex-1 text-left">
-        <span className="block font-gta text-base uppercase tracking-wide text-gold-gradient">
+      <div>
+        <div className="font-condensed text-[10px] uppercase tracking-[3px] text-gold-deep">
+          Free Merch
+        </div>
+        <div className="font-condensed text-base font-bold tracking-[0.5px] text-gold">
           Join the Giveaway
-        </span>
-        <span className="block text-xs text-white/60">
-          Drop your email &amp; phone — win gear.
-        </span>
-      </span>
-      <ArrowRight className="h-4 w-4 shrink-0 text-gold transition-transform group-hover:translate-x-0.5" />
+        </div>
+        <div className="mt-0.5 text-xs text-[#666]">
+          Drop your email &amp; phone — win gear
+        </div>
+      </div>
+      <span className="shrink-0 text-2xl leading-none text-gold">→</span>
     </Link>
   );
 }

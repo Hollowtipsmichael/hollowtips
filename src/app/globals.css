@@ -133,19 +133,13 @@ html.dark body {
   30%, 50%, 70% { transform: translateX(-7px); }
   40%, 60% { transform: translateX(7px); }
 }
-@keyframes ht-pulse-ring {
-  0% { transform: scale(0.85); opacity: 0.7; }
-  70% { transform: scale(1.4); opacity: 0; }
-  100% { transform: scale(1.4); opacity: 0; }
+@keyframes ht-ring {
+  0%, 100% { transform: scale(1); opacity: 0.18; }
+  50% { transform: scale(1.08); opacity: 0.3; }
 }
 .ht-shake {
-  animation: ht-shake 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: ht-shake 0.5s ease 0.15s both;
 }
-.ht-pulse-ring::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 9999px;
-  border: 2px solid currentColor;
-  animation: ht-pulse-ring 1.8s ease-out infinite;
+.ht-ring {
+  animation: ht-ring 2s ease-in-out infinite;
 }
