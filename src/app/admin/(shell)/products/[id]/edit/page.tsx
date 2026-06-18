@@ -48,6 +48,8 @@ export default async function EditProductPage({
           id: product.id,
           name: product.name,
           slug: product.slug,
+          sku: product.sku ?? "",
+          size: product.size ?? "2G",
           strainName: product.strainName ?? "",
           productType: product.productType ?? "",
           description: product.description ?? "",

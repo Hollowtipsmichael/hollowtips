@@ -30,18 +30,16 @@ export async function POST(req: Request) {
   const ip = clientIp(req.headers);
   const geo = await lookupGeo(ip);
 
-  // First scan → VERIFIED + stamp date. Any later scan → FLAGGED (suspicious:
-  // a genuine unit is normally scanned once by its buyer). Admin-flagged stays.
+  // First scan → VERIFIED + stamp date. Later scans just increment the count
+  // (a valid code stays LEGIT; only an admin can flag a code).
   await prisma.$transaction([
     prisma.verificationCode.update({
       where: { id: record.id },
       data: {
         scanCount: { increment: 1 },
-        ...(wasFlagged
-          ? {}
-          : isFirst
-            ? { status: CodeStatus.VERIFIED, firstScannedAt: new Date() }
-            : { status: CodeStatus.FLAGGED }),
+        ...(isFirst
+          ? { status: CodeStatus.VERIFIED, firstScannedAt: new Date() }
+          : {}),
       },
     }),
     prisma.scanEvent.create({

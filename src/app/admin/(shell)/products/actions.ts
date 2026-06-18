@@ -31,6 +31,8 @@ export async function createProduct(input: ProductInput): Promise<ActionResult> 
     data: {
       name: data.name,
       slug,
+      sku: data.sku ?? null,
+      size: data.size ?? null,
       strainName: data.strainName ?? null,
       productType: data.productType ?? null,
       description: data.description ?? null,
@@ -79,6 +81,8 @@ export async function updateProduct(
     data: {
       name: data.name,
       slug,
+      sku: data.sku ?? null,
+      size: data.size ?? null,
       strainName: data.strainName ?? null,
       productType: data.productType ?? null,
       description: data.description ?? null,

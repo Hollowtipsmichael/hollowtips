@@ -19,9 +19,15 @@ export async function GET() {
   });
 
   const csv = [
-    "email,name,product,capturedAt",
+    "email,name,phone,product,capturedAt",
     ...rows.map((r) =>
-      [r.email, r.name ?? "", r.product?.name ?? "", r.capturedAt.toISOString()]
+      [
+        r.email,
+        r.name ?? "",
+        r.phone ?? "",
+        r.product?.name ?? "",
+        r.capturedAt.toISOString(),
+      ]
         .map(csvCell)
         .join(","),
     ),

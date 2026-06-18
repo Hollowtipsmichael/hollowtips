@@ -8,18 +8,23 @@ const ADMIN_EMAIL = "admin@hollowtips.com";
 const ADMIN_PASSWORD = "ChangeMe123!";
 const ADMIN_NAME = "Hollowtips Admin";
 
-// The 10 real Hollowtips strains (Round 1 V1) — authoritative types from client.
-const STRAINS: { name: string; productType: string; description: string }[] = [
-  { name: "Candy Gat", productType: "INDICA", description: "Sweet candied gas — loud, smooth and dessert-forward." },
-  { name: "Strawberry Staccato", productType: "INDICA", description: "Fresh strawberry candy with a smooth, balanced punch." },
-  { name: "Mango Mac-10", productType: "HYBRID", description: "Juicy mango rush — bright, fast and uplifting." },
-  { name: "Nina Pina", productType: "SATIVA", description: "Piña colada vibes — sweet pineapple and coconut cream." },
-  { name: "Lava Cake Launcher", productType: "INDICA", description: "Rich chocolate lava cake — deep, heavy and indulgent." },
-  { name: "Blueberry Buckshot", productType: "INDICA", description: "Jammy ripe blueberries with an earthy backbone." },
-  { name: "Key Lime Glock", productType: "HYBRID", description: "Zesty key lime pie with a creamy graham finish." },
-  { name: "Sorbet Shooter", productType: "HYBRID", description: "Cool, fruity sorbet on a calm, mellow exhale." },
-  { name: "Trop Trigger", productType: "SATIVA", description: "Tropical pineapple-berry blast with a citrus kick." },
-  { name: "Peach Pressure", productType: "SATIVA", description: "Ripe summer peach with a crisp, energizing lift." },
+// The 10 real Hollowtips strains (Round 1 V1) — types + SKUs from client sheet.
+const STRAINS: {
+  name: string;
+  sku: string;
+  productType: string;
+  description: string;
+}[] = [
+  { name: "Peach Pressure", sku: "A1", productType: "SATIVA", description: "Ripe summer peach with a crisp, energizing lift." },
+  { name: "Trop Trigger", sku: "A2", productType: "SATIVA", description: "Tropical pineapple-berry blast with a citrus kick." },
+  { name: "Key Lime Glock", sku: "A3", productType: "HYBRID", description: "Zesty key lime pie with a creamy graham finish." },
+  { name: "Sorbet Shooter", sku: "A4", productType: "HYBRID", description: "Cool, fruity sorbet on a calm, mellow exhale." },
+  { name: "Lava Cake Launcher", sku: "A5", productType: "INDICA", description: "Rich chocolate lava cake — deep, heavy and indulgent." },
+  { name: "Blueberry Buckshot", sku: "A6", productType: "INDICA", description: "Jammy ripe blueberries with an earthy backbone." },
+  { name: "Mango Mac-10", sku: "A7", productType: "HYBRID", description: "Juicy mango rush — bright, fast and uplifting." },
+  { name: "Nina Pina", sku: "A8", productType: "SATIVA", description: "Piña colada vibes — sweet pineapple and coconut cream." },
+  { name: "Strawberry Staccato", sku: "A9", productType: "INDICA", description: "Fresh strawberry candy with a smooth, balanced punch." },
+  { name: "Candy Gat", sku: "A10", productType: "INDICA", description: "Sweet candied gas — loud, smooth and dessert-forward." },
 ];
 
 async function main() {
@@ -52,12 +57,16 @@ async function main() {
       where: { slug },
       update: {
         name: s.name,
+        sku: s.sku,
+        size: "2G",
         productType: s.productType,
         description: s.description,
       },
       create: {
         name: s.name,
         slug,
+        sku: s.sku,
+        size: "2G",
         productType: s.productType,
         description: s.description,
         isActive: true,

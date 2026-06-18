@@ -14,6 +14,8 @@ export interface ProductFormInitial {
   id?: string;
   name: string;
   slug: string;
+  sku: string;
+  size: string;
   strainName: string;
   productType: string;
   description: string;
@@ -29,6 +31,8 @@ export interface ProductFormInitial {
 const EMPTY: ProductFormInitial = {
   name: "",
   slug: "",
+  sku: "",
+  size: "2G",
   strainName: "",
   productType: "",
   description: "",
@@ -72,6 +76,8 @@ export function ProductForm({
     const input: ProductInput = {
       name: form.name,
       slug: form.slug || undefined,
+      sku: form.sku || undefined,
+      size: form.size || undefined,
       strainName: form.strainName || undefined,
       productType: (form.productType || undefined) as
         | "INDICA"
@@ -152,6 +158,25 @@ export function ProductForm({
                     <option value="SATIVA">Sativa</option>
                     <option value="HYBRID">Hybrid</option>
                   </select>
+                </Field>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="SKU" htmlFor="sku" hint="e.g. A1–A10">
+                  <TextInput
+                    id="sku"
+                    value={form.sku}
+                    onChange={(e) => set("sku", e.target.value.toUpperCase())}
+                    placeholder="A1"
+                  />
+                </Field>
+                <Field label="Size" htmlFor="size">
+                  <TextInput
+                    id="size"
+                    value={form.size}
+                    onChange={(e) => set("size", e.target.value)}
+                    placeholder="2G"
+                  />
                 </Field>
               </div>
 

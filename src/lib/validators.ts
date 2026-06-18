@@ -24,6 +24,8 @@ const optionalType = z
 export const productSchema = z.object({
   name: z.string().trim().min(1, "Name is required.").max(120),
   slug: optionalText, // optional manual override; slugified server-side
+  sku: optionalText,
+  size: optionalText,
   strainName: optionalText,
   productType: optionalType,
   description: optionalText,

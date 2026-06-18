@@ -26,6 +26,8 @@ model Product {
   id              String   @id @default(cuid())
   name            String
   slug            String   @unique
+  sku             String? // A1–A10 (flavor SKU)
+  size            String?  @default("2G")
   strainName      String?
   productType     String? // INDICA | SATIVA | HYBRID (packaging badge)
   description     String?
@@ -119,6 +121,7 @@ model EmailCapture {
   id         String   @id @default(cuid())
   email      String
   name       String?
+  phone      String?
   productId  String?
   product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   capturedAt DateTime @default(now())
