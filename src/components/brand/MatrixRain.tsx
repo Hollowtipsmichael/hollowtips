@@ -39,7 +39,6 @@ export function MatrixRain({
     const WORD = "HOLLOWTIPS";
     const GAP = 3;
     const CYCLE = WORD.length + GAP;
-    const RAIN_CHARS = "HOLLOWTIPS0123456789".split("");
 
     let width = 0;
     let height = 0;
@@ -140,7 +139,9 @@ export function MatrixRain({
         } else {
           ctx.font = `${cell}px "Courier New", monospace`;
           const y = col.drop * cell;
-          const ch = RAIN_CHARS[Math.floor(Math.random() * RAIN_CHARS.length)];
+          // deposit HOLLOWTIPS letters in sequence as the head falls, so the
+          // fading trail spells the brand word (not random characters)
+          const ch = WORD[((col.drop % WORD.length) + WORD.length) % WORD.length];
           const rnd = Math.random();
           ctx.globalAlpha = col.alpha;
           if (rnd > 0.99) {
