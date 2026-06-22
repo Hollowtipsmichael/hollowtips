@@ -38,8 +38,8 @@ export function HollowtipsLogo({
   const Wordmark = (
     <span className="flex flex-col leading-none">
       <span
-        className="font-display tracking-wide text-gold-shine"
-        style={{ fontSize: size * 0.72 }}
+        className="font-condensed font-bold tracking-wide text-gold-shine"
+        style={{ fontSize: size * 0.78 }}
       >
         Hollowtips
       </span>

@@ -20,7 +20,7 @@ export default function VerifyEntryPage() {
         </div>
 
         <h1 className="font-gta text-4xl uppercase tracking-wide text-gold-gradient drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] sm:text-5xl">
-          Verify your pack
+          Verify your Bullet
         </h1>
         <p className="mx-auto mt-3 max-w-xs text-sm text-white/70">
           Scratch the gold panel on the back of your Hollowtips and enter the
