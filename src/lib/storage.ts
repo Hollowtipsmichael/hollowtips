@@ -31,11 +31,12 @@ const RULES: Record<
     },
   },
   video: {
-    maxBytes: 50 * 1024 * 1024, // 50MB
+    maxBytes: 2 * 1024 * 1024 * 1024, // 2GB — effectively unlimited for trailers
     types: {
       "video/mp4": "mp4",
       "video/webm": "webm",
       "video/quicktime": "mov",
+      "video/x-matroska": "mkv",
     },
   },
 };

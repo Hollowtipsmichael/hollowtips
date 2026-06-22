@@ -19,28 +19,46 @@ export function MediaUploadField({
 }: MediaUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
   const accept = kind === "image" ? "image/*" : "video/*";
   const Icon = kind === "image" ? ImageIcon : Film;
 
-  async function upload(file: File) {
+  function upload(file: File) {
     setError(null);
     setUploading(true);
-    try {
-      const body = new FormData();
-      body.append("file", file);
-      body.append("kind", kind);
-      const res = await fetch("/api/admin/upload", { method: "POST", body });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Upload failed.");
-      onChange(json.url as string);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Upload failed.");
-    } finally {
+    setProgress(0);
+    const body = new FormData();
+    body.append("file", file);
+    body.append("kind", kind);
+
+    // XHR (not fetch) so we get real upload progress for large videos
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/admin/upload");
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
       setUploading(false);
-    }
+      let json: { url?: string; error?: string } = {};
+      try {
+        json = JSON.parse(xhr.responseText);
+      } catch {
+        /* ignore */
+      }
+      if (xhr.status >= 200 && xhr.status < 300 && json.url) {
+        onChange(json.url);
+      } else {
+        setError(json.error || `Upload failed (${xhr.status}).`);
+      }
+    };
+    xhr.onerror = () => {
+      setUploading(false);
+      setError("Upload failed — check your connection and try again.");
+    };
+    xhr.send(body);
   }
 
   function onFiles(files: FileList | null) {
@@ -104,12 +122,21 @@ export function MediaUploadField({
           </span>
         )}
         <span className="text-xs text-muted">
-          {uploading ? "Uploading…" : "Drop or click to upload"}
+          {uploading ? `Uploading… ${progress}%` : "Drop or click to upload"}
         </span>
-        <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-muted/70">
-          <Icon className="h-3 w-3" />
-          {kind === "image" ? "PNG · JPG · WEBP · GIF" : "MP4 · WEBM"}
-        </span>
+        {uploading ? (
+          <span className="mt-1 block h-1.5 w-3/4 overflow-hidden rounded-full bg-white/10">
+            <span
+              className="block h-full rounded-full bg-gold transition-[width] duration-150"
+              style={{ width: `${progress}%` }}
+            />
+          </span>
+        ) : (
+          <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-muted/70">
+            <Icon className="h-3 w-3" />
+            {kind === "image" ? "PNG · JPG · WEBP · GIF" : "MP4 · WEBM · MOV · MKV"}
+          </span>
+        )}
       </button>
       <input
         ref={inputRef}

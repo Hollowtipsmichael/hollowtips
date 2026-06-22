@@ -127,7 +127,14 @@ export function MediaGallery({ items }: { items: MediaItemDTO[] }) {
                 {(() => {
                   const v = parseVideo(playing.videoUrl);
                   return v.kind === "file" ? (
-                    <video src={v.embedUrl} controls autoPlay playsInline className="h-full w-full" />
+                    <video
+                      src={v.embedUrl}
+                      controls
+                      autoPlay
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full bg-black object-contain"
+                    />
                   ) : (
                     <iframe
                       src={v.embedUrl}
