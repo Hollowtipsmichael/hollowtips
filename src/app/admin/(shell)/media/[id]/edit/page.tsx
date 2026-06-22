@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { mergeCategories } from "@/lib/mediaCategories";
 import { MediaForm } from "@/components/admin/MediaForm";
 
 export const metadata = { title: "Edit Media — Hollowtips Verify" };
@@ -34,7 +35,7 @@ export default async function EditMediaPage({
       <div className="rule-gold" />
       <MediaForm
         mode="edit"
-        categories={cats.map((c) => c.category)}
+        categories={mergeCategories(cats.map((c) => c.category))}
         initial={{
           id: m.id,
           title: m.title,

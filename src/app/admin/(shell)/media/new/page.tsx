@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
+import { mergeCategories } from "@/lib/mediaCategories";
 import { MediaForm } from "@/components/admin/MediaForm";
 
 export const metadata = { title: "New Media — Hollowtips Verify" };
@@ -23,7 +24,7 @@ export default async function NewMediaPage() {
         <h2 className="font-display text-3xl tracking-wide text-fg">New Media</h2>
       </div>
       <div className="rule-gold" />
-      <MediaForm mode="create" categories={cats.map((c) => c.category)} />
+      <MediaForm mode="create" categories={mergeCategories(cats.map((c) => c.category))} />
     </div>
   );
 }
