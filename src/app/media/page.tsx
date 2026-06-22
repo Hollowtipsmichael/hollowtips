@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
+import { PublicFooter } from "@/components/public/PublicFooter";
 import { mergeSections } from "@/lib/mediaCategories";
 import { MediaGallery, type MediaItemDTO } from "@/components/media/MediaGallery";
 
@@ -59,6 +60,8 @@ export default async function MediaPage() {
 
         <MediaGallery items={items} tabs={tabs} />
       </section>
+
+      <PublicFooter />
     </main>
   );
 }
