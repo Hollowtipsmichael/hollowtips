@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
 import { Loader2, AlertCircle, Save, Link2, Upload } from "lucide-react";
 import type { MediaInput } from "@/lib/validators";
@@ -33,16 +33,35 @@ const EMPTY: MediaFormInitial = {
 export function MediaForm({
   mode,
   initial = EMPTY,
+  categories = [],
 }: {
   mode: "create" | "edit";
   initial?: MediaFormInitial;
+  categories?: string[];
 }) {
   const [form, setForm] = useState<MediaFormInitial>(initial);
   const [mediaMode, setMediaMode] = useState<"link" | "upload">(
     initial.videoUrl.startsWith("/uploads/") ? "upload" : "link",
   );
+  // Category as a dropdown of existing tabs (+ an explicit "new" escape hatch)
+  // so it's not retyped/misspelled into accidental duplicate tabs.
+  const [catMode, setCatMode] = useState<"existing" | "new">(
+    categories.length ? "existing" : "new",
+  );
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
+
+  // On create with existing tabs, default to the first one (avoid a stale value).
+  useEffect(() => {
+    if (
+      catMode === "existing" &&
+      categories.length &&
+      !categories.includes(form.category)
+    ) {
+      setForm((f) => ({ ...f, category: categories[0] }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function set<K extends keyof MediaFormInitial>(k: K, v: MediaFormInitial[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -95,8 +114,52 @@ export function MediaForm({
                 <TextInput id="title" value={form.title} onChange={(e) => set("title", e.target.value)} placeholder="Round 1 — Official Trailer" required />
               </Field>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Category" htmlFor="category" required hint="Tab on the public page (e.g. Trailers)">
-                  <TextInput id="category" value={form.category} onChange={(e) => set("category", e.target.value)} placeholder="Trailers" required />
+                <Field label="Category" htmlFor="category" required hint="Tab on the public page">
+                  {catMode === "existing" ? (
+                    <select
+                      id="category"
+                      value={form.category}
+                      onChange={(e) => {
+                        if (e.target.value === "__new__") {
+                          setCatMode("new");
+                          set("category", "");
+                        } else {
+                          set("category", e.target.value);
+                        }
+                      }}
+                      className="focus-gold w-full rounded-xl border border-subtle bg-bg/60 px-3 py-2.5 text-fg transition-colors"
+                    >
+                      {categories.map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                      <option value="__new__">+ New category…</option>
+                    </select>
+                  ) : (
+                    <div className="flex gap-2">
+                      <TextInput
+                        id="category"
+                        autoFocus
+                        value={form.category}
+                        onChange={(e) => set("category", e.target.value)}
+                        placeholder="New category name"
+                        required
+                      />
+                      {categories.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCatMode("existing");
+                            set("category", categories[0]);
+                          }}
+                          className="focus-gold shrink-0 rounded-xl border border-subtle px-3 text-sm text-muted transition-colors hover:text-fg"
+                        >
+                          Cancel
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </Field>
                 <Field label="Published date" htmlFor="date">
                   <TextInput id="date" type="date" value={form.publishedAt} onChange={(e) => set("publishedAt", e.target.value)} />

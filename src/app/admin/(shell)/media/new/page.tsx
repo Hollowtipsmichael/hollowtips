@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 import { MediaForm } from "@/components/admin/MediaForm";
 
 export const metadata = { title: "New Media — Hollowtips Verify" };
+export const dynamic = "force-dynamic";
 
-export default function NewMediaPage() {
+export default async function NewMediaPage() {
+  const cats = await prisma.mediaItem.findMany({
+    distinct: ["category"],
+    select: { category: true },
+    orderBy: { category: "asc" },
+  });
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="space-y-3">
@@ -15,7 +23,7 @@ export default function NewMediaPage() {
         <h2 className="font-display text-3xl tracking-wide text-fg">New Media</h2>
       </div>
       <div className="rule-gold" />
-      <MediaForm mode="create" />
+      <MediaForm mode="create" categories={cats.map((c) => c.category)} />
     </div>
   );
 }

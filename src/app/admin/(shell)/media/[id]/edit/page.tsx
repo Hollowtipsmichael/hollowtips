@@ -16,6 +16,12 @@ export default async function EditMediaPage({
   const m = await prisma.mediaItem.findUnique({ where: { id } });
   if (!m) notFound();
 
+  const cats = await prisma.mediaItem.findMany({
+    distinct: ["category"],
+    select: { category: true },
+    orderBy: { category: "asc" },
+  });
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="space-y-3">
@@ -28,6 +34,7 @@ export default async function EditMediaPage({
       <div className="rule-gold" />
       <MediaForm
         mode="edit"
+        categories={cats.map((c) => c.category)}
         initial={{
           id: m.id,
           title: m.title,
