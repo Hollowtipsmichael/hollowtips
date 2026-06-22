@@ -12,14 +12,15 @@ import { randomUUID } from "node:crypto";
  * single intended swap point; the rest of the app only deals in URLs.
  */
 
-export type UploadKind = "image" | "video";
+export type UploadKind = "image" | "video" | "file";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 const PUBLIC_PREFIX = "/uploads";
 
+// `types: null` → accept any file type (derive extension from the filename).
 const RULES: Record<
   UploadKind,
-  { maxBytes: number; types: Record<string, string> }
+  { maxBytes: number; types: Record<string, string> | null }
 > = {
   image: {
     maxBytes: 10 * 1024 * 1024, // 10MB
@@ -39,7 +40,17 @@ const RULES: Record<
       "video/x-matroska": "mkv",
     },
   },
+  // Downloads: any file (zip, pdf, png, hi-res art, etc.)
+  file: {
+    maxBytes: 2 * 1024 * 1024 * 1024, // 2GB
+    types: null,
+  },
 };
+
+function safeExt(name: string): string {
+  const ext = (name.split(".").pop() || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  return ext ? ext.slice(0, 8) : "bin";
+}
 
 export class UploadError extends Error {}
 
@@ -57,10 +68,10 @@ export async function saveUpload(
       `File too large. Max ${Math.round(rule.maxBytes / (1024 * 1024))}MB.`,
     );
   }
-  const ext = rule.types[file.type];
+  const ext = rule.types ? rule.types[file.type] : safeExt(file.name);
   if (!ext) {
     throw new UploadError(
-      `Unsupported ${kind} type. Allowed: ${Object.values(rule.types).join(", ")}.`,
+      `Unsupported ${kind} type. Allowed: ${Object.values(rule.types ?? {}).join(", ")}.`,
     );
   }
 

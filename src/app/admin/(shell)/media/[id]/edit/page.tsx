@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import { mergeCategories } from "@/lib/mediaCategories";
+import { mergeVideoCategories } from "@/lib/mediaCategories";
 import { MediaForm } from "@/components/admin/MediaForm";
 
 export const metadata = { title: "Edit Media — Hollowtips Verify" };
@@ -18,6 +18,7 @@ export default async function EditMediaPage({
   if (!m) notFound();
 
   const cats = await prisma.mediaItem.findMany({
+    where: { type: "video" },
     distinct: ["category"],
     select: { category: true },
     orderBy: { category: "asc" },
@@ -35,12 +36,14 @@ export default async function EditMediaPage({
       <div className="rule-gold" />
       <MediaForm
         mode="edit"
-        categories={mergeCategories(cats.map((c) => c.category))}
+        categories={mergeVideoCategories(cats.map((c) => c.category))}
         initial={{
           id: m.id,
           title: m.title,
+          type: (m.type as "video" | "download" | "wallpaper") ?? "video",
           category: m.category,
           videoUrl: m.videoUrl,
+          fileUrl: m.fileUrl ?? undefined,
           thumbnailUrl: m.thumbnailUrl ?? undefined,
           publishedAt: m.publishedAt
             ? m.publishedAt.toISOString().slice(0, 10)

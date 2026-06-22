@@ -18,8 +18,10 @@ async function requireAdmin() {
 function toData(d: ReturnType<typeof mediaSchema.parse>) {
   return {
     title: d.title,
+    type: d.type,
     category: d.category,
-    videoUrl: d.videoUrl,
+    videoUrl: d.type === "video" ? (d.videoUrl ?? "") : "",
+    fileUrl: d.type === "video" ? null : (d.fileUrl ?? null),
     thumbnailUrl: d.thumbnailUrl ?? null,
     publishedAt: d.publishedAt ? new Date(d.publishedAt) : null,
     isNew: d.isNew,
@@ -58,6 +60,8 @@ export async function updateMedia(
   const data = toData(parsed.data);
   // clean up replaced uploaded media
   if (existing.videoUrl !== data.videoUrl) await deleteUpload(existing.videoUrl);
+  if (existing.fileUrl && existing.fileUrl !== data.fileUrl)
+    await deleteUpload(existing.fileUrl);
   if (existing.thumbnailUrl && existing.thumbnailUrl !== data.thumbnailUrl)
     await deleteUpload(existing.thumbnailUrl);
   await prisma.mediaItem.update({ where: { id }, data });
@@ -71,6 +75,7 @@ export async function deleteMedia(id: string): Promise<ActionResult> {
   if (!m) return { error: "Media not found." };
   await prisma.mediaItem.delete({ where: { id } });
   await deleteUpload(m.videoUrl);
+  await deleteUpload(m.fileUrl);
   await deleteUpload(m.thumbnailUrl);
   revalidate();
   return undefined;

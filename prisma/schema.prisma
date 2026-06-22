@@ -133,8 +133,10 @@ model EmailCapture {
 model MediaItem {
   id           String    @id @default(cuid())
   title        String
-  category     String // free-text; public groups into tabs
-  videoUrl     String // external (YouTube/Vimeo) URL or /uploads/<file>.mp4
+  type         String    @default("video") // "video" | "download" | "wallpaper"
+  category     String // tab on the public page
+  videoUrl     String    @default("") // video: external URL or /uploads/<file>.mp4
+  fileUrl      String? // download/wallpaper: the downloadable asset/image
   thumbnailUrl String?
   publishedAt  DateTime?
   isNew        Boolean   @default(false)

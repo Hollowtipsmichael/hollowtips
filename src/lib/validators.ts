@@ -51,16 +51,39 @@ export const productSchema = z.object({
 export type ProductInput = z.input<typeof productSchema>;
 export type ProductParsed = z.output<typeof productSchema>;
 
-export const mediaSchema = z.object({
-  title: z.string().trim().min(1, "Title is required.").max(160),
-  category: z.string().trim().min(1, "Category is required.").max(60),
-  videoUrl: z.string().trim().min(1, "Video URL or upload is required.").max(2000),
-  thumbnailUrl: optionalText,
-  publishedAt: optionalText, // ISO date string from <input type=date>
-  isNew: z.boolean().default(false),
-  isActive: z.boolean().default(true),
-  sortOrder: z.coerce.number().int().min(0).max(9999).default(0),
-});
+export const mediaSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required.").max(160),
+    type: z.enum(["video", "download", "wallpaper"]).default("video"),
+    category: z.string().trim().min(1, "Category is required.").max(60),
+    videoUrl: z.string().trim().max(2000).optional().default(""),
+    fileUrl: optionalText,
+    thumbnailUrl: optionalText,
+    publishedAt: optionalText, // ISO date string from <input type=date>
+    isNew: z.boolean().default(false),
+    isActive: z.boolean().default(true),
+    sortOrder: z.coerce.number().int().min(0).max(9999).default(0),
+  })
+  .superRefine((d, ctx) => {
+    if (d.type === "video") {
+      if (!d.videoUrl || !d.videoUrl.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["videoUrl"],
+          message: "Video URL or upload is required.",
+        });
+      }
+    } else if (!d.fileUrl || !d.fileUrl.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["fileUrl"],
+        message:
+          d.type === "wallpaper"
+            ? "Upload an image."
+            : "Upload a file to download.",
+      });
+    }
+  });
 
 export type MediaInput = z.input<typeof mediaSchema>;
 

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file provided." }, { status: 400 });
   }
-  if (kind !== "image" && kind !== "video") {
+  if (kind !== "image" && kind !== "video" && kind !== "file") {
     return NextResponse.json({ error: "Invalid kind." }, { status: 400 });
   }
 

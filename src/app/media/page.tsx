@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ShieldCheck, Clapperboard } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
-import { mergeCategories } from "@/lib/mediaCategories";
+import { PublicFooter } from "@/components/public/PublicFooter";
+import { mergeSections } from "@/lib/mediaCategories";
 import { MediaGallery, type MediaItemDTO } from "@/components/media/MediaGallery";
 
 export const dynamic = "force-dynamic";
@@ -20,15 +21,18 @@ export default async function MediaPage() {
   const items: MediaItemDTO[] = rows.map((m) => ({
     id: m.id,
     title: m.title,
+    type: (m.type as MediaItemDTO["type"]) ?? "video",
     category: m.category,
     videoUrl: m.videoUrl,
+    fileUrl: m.fileUrl,
     thumbnailUrl: m.thumbnailUrl,
     publishedAt: m.publishedAt ? m.publishedAt.toISOString() : null,
     isNew: m.isNew,
   }));
 
-  // Always show the default tabs (Trailers, Commercials) + any custom ones.
-  const tabs = mergeCategories(Array.from(new Set(rows.map((r) => r.category))));
+  // Always show the section tabs (Trailers, Commercials, Downloads,
+  // Wallpaper/Artwork) + any custom video categories.
+  const tabs = mergeSections(Array.from(new Set(rows.map((r) => r.category))));
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
@@ -54,26 +58,10 @@ export default async function MediaPage() {
           </h1>
         </div>
 
-        {items.length === 0 ? (
-          <div className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-2xl border border-white/10 bg-[#0c0c0c] py-16 text-center">
-            <span className="grid h-12 w-12 place-items-center rounded-xl border border-gold/20 bg-gold/5 text-gold">
-              <Clapperboard className="h-6 w-6" />
-            </span>
-            <p className="text-sm font-medium text-white">No media yet</p>
-            <p className="max-w-xs text-sm text-white/50">
-              Trailers and videos will appear here soon.
-            </p>
-          </div>
-        ) : (
-          <MediaGallery items={items} tabs={tabs} />
-        )}
+        <MediaGallery items={items} tabs={tabs} />
       </section>
 
-      <footer className="relative z-10 border-t border-white/10 px-5 py-8 text-center">
-        <p className="text-xs text-white/40">
-          21+ only · © {new Date().getFullYear()} Hollowtips
-        </p>
-      </footer>
+      <PublicFooter />
     </main>
   );
 }

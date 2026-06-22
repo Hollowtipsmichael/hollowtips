@@ -49,7 +49,11 @@ export default async function AdminMediaPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {items.map((m) => {
-            const poster = m.thumbnailUrl || parseVideo(m.videoUrl).posterFallback;
+            const poster =
+              m.type === "wallpaper"
+                ? m.fileUrl || m.thumbnailUrl
+                : m.thumbnailUrl ||
+                  (m.type === "video" ? parseVideo(m.videoUrl).posterFallback : null);
             return (
               <div key={m.id} className="card card-hover overflow-hidden">
                 <div className="relative aspect-video bg-black">

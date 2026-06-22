@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Loader2, UploadCloud, X, ImageIcon, Film } from "lucide-react";
+import { Loader2, UploadCloud, X, ImageIcon, Film, FileDown } from "lucide-react";
 
 interface MediaUploadFieldProps {
-  kind: "image" | "video";
+  kind: "image" | "video" | "file";
   value?: string;
   onChange: (url: string | undefined) => void;
   /** aspect ratio class for the preview box */
@@ -23,8 +23,8 @@ export function MediaUploadField({
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
 
-  const accept = kind === "image" ? "image/*" : "video/*";
-  const Icon = kind === "image" ? ImageIcon : Film;
+  const accept = kind === "image" ? "image/*" : kind === "video" ? "video/*" : undefined;
+  const Icon = kind === "image" ? ImageIcon : kind === "video" ? Film : FileDown;
 
   function upload(file: File) {
     setError(null);
@@ -72,7 +72,7 @@ export function MediaUploadField({
         {kind === "image" ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={value} alt="" className="h-full w-full object-cover" />
-        ) : (
+        ) : kind === "video" ? (
           <video
             src={value}
             className="h-full w-full object-cover"
@@ -80,6 +80,13 @@ export function MediaUploadField({
             playsInline
             controls
           />
+        ) : (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-3 text-center">
+            <FileDown className="h-7 w-7 text-gold" />
+            <span className="max-w-full truncate text-xs text-muted">
+              {value.split("/").pop()}
+            </span>
+          </div>
         )}
         <button
           type="button"
@@ -134,7 +141,11 @@ export function MediaUploadField({
         ) : (
           <span className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-muted/70">
             <Icon className="h-3 w-3" />
-            {kind === "image" ? "PNG · JPG · WEBP · GIF" : "MP4 · WEBM · MOV · MKV"}
+            {kind === "image"
+              ? "PNG · JPG · WEBP · GIF"
+              : kind === "video"
+                ? "MP4 · WEBM · MOV · MKV"
+                : "ANY FILE · ZIP · PDF · PNG"}
           </span>
         )}
       </button>
