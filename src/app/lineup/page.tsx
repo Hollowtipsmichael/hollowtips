@@ -84,9 +84,10 @@ export default async function LineupPage() {
             const art = p.artworkUrl || p.productImageUrl;
             const tint = (p.productType && TYPE_TINT[p.productType]) || "from-gold/20";
             return (
-              <div
+              <a
                 key={p.id}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0c]"
+                href={`/lineup/${p.slug}`}
+                className="group relative block overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0c] transition-colors hover:border-gold/40"
               >
                 <div
                   className={`relative aspect-[3/4] w-full bg-gradient-to-b ${tint} to-black`}
@@ -116,7 +117,7 @@ export default async function LineupPage() {
                     {p.name}
                   </p>
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
