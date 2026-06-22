@@ -19,10 +19,20 @@ function poster(m: MediaItemDTO): string | null {
   return m.thumbnailUrl || parseVideo(m.videoUrl).posterFallback;
 }
 
-export function MediaGallery({ items }: { items: MediaItemDTO[] }) {
+export function MediaGallery({
+  items,
+  tabs,
+}: {
+  items: MediaItemDTO[];
+  /** Full tab list to always show (e.g. Trailers, Commercials), even if empty. */
+  tabs?: string[];
+}) {
   const categories = useMemo(
-    () => Array.from(new Set(items.map((m) => m.category))),
-    [items],
+    () =>
+      tabs && tabs.length
+        ? tabs
+        : Array.from(new Set(items.map((m) => m.category))),
+    [items, tabs],
   );
   const [active, setActive] = useState(categories[0] ?? "");
   const [playing, setPlaying] = useState<MediaItemDTO | null>(null);
@@ -41,7 +51,7 @@ export function MediaGallery({ items }: { items: MediaItemDTO[] }) {
   return (
     <div className="w-full">
       {/* Tabs */}
-      {categories.length > 1 && (
+      {categories.length >= 1 && (
         <div className="mb-7 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button
@@ -61,6 +71,11 @@ export function MediaGallery({ items }: { items: MediaItemDTO[] }) {
       )}
 
       {/* Cards */}
+      {shown.length === 0 ? (
+        <p className="py-16 text-center text-sm text-white/40">
+          No videos in {active} yet.
+        </p>
+      ) : (
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((m) => {
           const p = poster(m);
@@ -107,6 +122,7 @@ export function MediaGallery({ items }: { items: MediaItemDTO[] }) {
           );
         })}
       </div>
+      )}
 
       {/* Player modal */}
       {playing &&

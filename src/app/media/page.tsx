@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShieldCheck, Clapperboard } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
+import { mergeCategories } from "@/lib/mediaCategories";
 import { MediaGallery, type MediaItemDTO } from "@/components/media/MediaGallery";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,9 @@ export default async function MediaPage() {
     isNew: m.isNew,
   }));
 
+  // Always show the default tabs (Trailers, Commercials) + any custom ones.
+  const tabs = mergeCategories(Array.from(new Set(rows.map((r) => r.category))));
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
       <div className="grain pointer-events-none fixed inset-0 opacity-50" />
@@ -43,10 +47,10 @@ export default async function MediaPage() {
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-16 pt-6">
         <div className="mb-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-gold">
-            Media
+            Hollowtips
           </p>
           <h1 className="mt-2 font-gta text-5xl uppercase tracking-wide text-gold-shine sm:text-6xl">
-            Trailers
+            Media
           </h1>
         </div>
 
@@ -61,7 +65,7 @@ export default async function MediaPage() {
             </p>
           </div>
         ) : (
-          <MediaGallery items={items} />
+          <MediaGallery items={items} tabs={tabs} />
         )}
       </section>
 
