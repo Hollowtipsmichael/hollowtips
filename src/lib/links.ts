@@ -3,8 +3,11 @@
 // screens (social row + Telegram strip) and elsewhere.
 export const LINKS = {
   instagram: "https://instagram.com/hollowtips",
-  tiktok: "https://tiktok.com/@hollowtips",
-  youtube: "https://youtube.com/@hollowtips",
+  x: "https://x.com/xxxhollowtips",
+  tiktok: "https://www.tiktok.com/@hollowtipsofficial",
+  youtube: "https://www.youtube.com/@hollowtipsofficial",
+  website: "https://hollowtips.com",
+  // No Telegram provided by client yet — placeholder.
   telegram: "https://t.me/hollowtips",
   giveaway: "/connect",
 };

@@ -26,19 +26,28 @@ function YT() {
     </svg>
   );
 }
-function TG() {
+function XLogo() {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[18px] w-[18px]" aria-hidden="true">
-      <path d="M21.85 2.68L2.1 10.08c-1.32.53-1.31 1.27-.24 1.6l4.9 1.53 1.89 5.76c.23.63.11.88.77.88.5 0 .73-.24 1.02-.53l2.44-2.38 4.93 3.64c.91.5 1.56.24 1.79-.84l3.24-15.27c.33-1.34-.52-1.95-1.99-1.79z" />
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-[16px] w-[16px]" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117l11.966 15.644z" />
+    </svg>
+  );
+}
+function Globe() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <path d="M3 12h18M12 3c2.5 2.5 2.5 15.5 0 18M12 3c-2.5 2.5-2.5 15.5 0 18" stroke="currentColor" strokeWidth="2" />
     </svg>
   );
 }
 
 const socials = [
   { href: LINKS.instagram, Icon: IG, label: "Instagram" },
+  { href: LINKS.x, Icon: XLogo, label: "X" },
   { href: LINKS.tiktok, Icon: TT, label: "TikTok" },
   { href: LINKS.youtube, Icon: YT, label: "YouTube" },
-  { href: LINKS.telegram, Icon: TG, label: "Telegram" },
+  { href: LINKS.website, Icon: Globe, label: "Website" },
 ];
 
 const nav = [

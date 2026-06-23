@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Play, X, Download, FileDown } from "lucide-react";
 import { parseVideo } from "@/lib/video";
+import { EMPTY_COPY } from "@/lib/mediaCategories";
 
 export interface MediaItemDTO {
   id: string;
@@ -144,8 +145,8 @@ export function MediaGallery({
 
       {/* Cards */}
       {shown.length === 0 ? (
-        <p className="py-16 text-center text-sm text-white/40">
-          Nothing in {active} yet — check back soon.
+        <p className="mx-auto max-w-md py-16 text-center font-condensed text-lg uppercase tracking-wide text-white/45">
+          {EMPTY_COPY[active] ?? "Coming soon."}
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,8 +154,7 @@ export function MediaGallery({
             m.type === "download" ? (
               <a
                 key={m.id}
-                href={m.fileUrl ?? "#"}
-                download
+                href={`/api/media/download?id=${m.id}`}
                 className={cardClass}
               >
                 {cardInner(m)}
@@ -243,8 +243,7 @@ export function MediaGallery({
                 className="max-h-[75vh] w-auto rounded-2xl border border-gold/30 object-contain shadow-gold-glow"
               />
               <a
-                href={viewing.fileUrl ?? "#"}
-                download
+                href={`/api/media/download?id=${viewing.id}`}
                 className="btn-gold focus-gold mt-4"
               >
                 <Download className="h-4 w-4" />

@@ -25,6 +25,15 @@ export const SECTION_TABS = [
   WALLPAPER_CATEGORY,
 ];
 
+/** Empty-state copy per section (client-provided). */
+export const EMPTY_COPY: Record<string, string> = {
+  Trailers: "Loaded chambers. Coming soon.",
+  Commercials: "The ads are in the chamber. Drop incoming.",
+  [DOWNLOADS_CATEGORY]: "Lock screens that hit different. Tap. Save. Repeat.",
+  [WALLPAPER_CATEGORY]:
+    "The full lineup, full res. Pick your poison, make it your background.",
+};
+
 function uniq(arr: string[]): string[] {
   return Array.from(new Set(arr));
 }
