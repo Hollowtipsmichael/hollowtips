@@ -45,8 +45,8 @@ export function MatrixBg() {
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      font = w < 640 ? 15 : 17;
-      const gap = font * 1.35; // denser
+      font = w < 640 ? 15 : 18;
+      const gap = font * 1.05; // dense, full-screen matrix (canvas is the hero now)
       const n = Math.floor(w / gap);
       cols = Array.from({ length: n }, (_, i) => ({
         x: Math.round(i * gap + gap / 2),
@@ -54,8 +54,8 @@ export function MatrixBg() {
         // speed scales with viewport height so it doesn't crawl on tall desktops
         speed: rand(0.22, 0.5) * h, // px/sec; radial scaling applied per-frame
         gold: Math.random() < 0.22,
-        trail: Math.floor(rand(8, 18)),
-        word: Math.random() < 0.18,
+        trail: Math.floor(rand(9, 22)),
+        word: Math.random() < 0.2,
         off: Math.floor(Math.random() * 10),
       }));
       const pc = w < 640 ? 16 : 40;
@@ -163,14 +163,9 @@ export function MatrixBg() {
 
   return (
     <div className="absolute inset-0 overflow-hidden bg-black">
-      {/* base: client's matrix wallpaper, slow drift for life */}
-      <div
-        className="absolute inset-0 bg-cover bg-top bg-no-repeat [animation:ht-bgdrift_28s_ease-in-out_infinite] motion-reduce:animate-none"
-        style={{
-          backgroundImage: "url(/brand/matrix-poster.jpg)",
-          filter: "brightness(1.05) saturate(1.15)",
-        }}
-      />
+      {/* resolution-independent depth glow (vector, always crisp) */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,70,35,0.22),rgba(0,0,0,0)_70%)]" />
+      {/* live, sharp matrix rain drawn on the canvas */}
       <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full" />
     </div>
   );
