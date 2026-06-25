@@ -38,8 +38,8 @@ export function MatrixBg() {
     const goldFront = 0.33; // Balanced
     const parScale = 1; // Cinematic
 
-    const bfs = isMobile ? 13 : 15;
-    const ffs = isMobile ? 22 : 28;
+    const bfs = isMobile ? 12 : 14;
+    const ffs = isMobile ? 16 : 20; // finer near-rain (less "zoomed in")
     let W = 0, H = 0, dpr = 1;
     let bCols: any[] = [], fCols: any[] = [], particles: any[] = [], streaks: any[] = [];
     const rng = () => Math.random();
@@ -84,10 +84,10 @@ export function MatrixBg() {
       bCols = [];
       for (let i = 0; i < bN; i++) { const c: any = { x: i * bStep + (rng() * bStep * 0.3) }; resetBack(c); c.d = rng() * (H / bfs); bCols.push(c); }
 
-      const fStep = ffs * 1.95 * 1.15;
+      const fStep = ffs * 1.6;
       const fN = Math.max(1, Math.floor(W / fStep));
       fCols = [];
-      for (let i = 0; i < fN; i++) { const c: any = { x: i * fStep + (rng() * fStep * 0.4) }; resetFront(c); c.d = rng() * (H / ffs); fCols.push(c); }
+      for (let i = 0; i < fN; i++) { const c: any = { x: i * fStep + (rng() - 0.5) * fStep * 0.4 }; resetFront(c); c.d = rng() * (H / ffs); fCols.push(c); }
 
       const pN = !showP ? 0 : (isMobile ? 26 : 64);
       particles = [];
