@@ -22,10 +22,10 @@ export function MatrixBg() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const GREEN = "#39ff14";
-    const GREEN_DIM = "#1faa59";
-    const GOLD = "#F5D061";
-    const GOLD_DIM = "#D4AF37";
+    const GREEN = "#8dffa6"; // bright lead
+    const GREEN_DIM = "#2fd95f"; // vivid body
+    const GOLD = "#FCE38A";
+    const GOLD_DIM = "#E8C24A";
     const GLYPHS = "HOLLOWTIPS".split(""); // brand letters only, no numbers
 
     let w = 0, h = 0, dpr = 1, raf = 0, last = 0, running = true;
@@ -45,17 +45,17 @@ export function MatrixBg() {
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      font = w < 640 ? 15 : 18;
-      const gap = font * 1.05; // dense, full-screen matrix (canvas is the hero now)
+      font = w < 640 ? 13 : 14; // small chars → dense Matrix wall
+      const gap = font; // columns packed edge-to-edge
       const n = Math.floor(w / gap);
       cols = Array.from({ length: n }, (_, i) => ({
         x: Math.round(i * gap + gap / 2),
         y: rand(-h, 0),
         // speed scales with viewport height so it doesn't crawl on tall desktops
-        speed: rand(0.22, 0.5) * h, // px/sec; radial scaling applied per-frame
-        gold: Math.random() < 0.22,
-        trail: Math.floor(rand(9, 22)),
-        word: Math.random() < 0.2,
+        speed: rand(0.2, 0.46) * h, // px/sec; radial scaling applied per-frame
+        gold: Math.random() < 0.2,
+        trail: Math.floor(rand(16, 38)), // long continuous streams
+        word: Math.random() < 0.22,
         off: Math.floor(Math.random() * 10),
       }));
       const pc = w < 640 ? 16 : 40;
@@ -94,10 +94,10 @@ export function MatrixBg() {
           if (k === 0) {
             ctx.fillStyle = "#eafff0";
             ctx.shadowColor = lead;
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 8;
           } else {
-            ctx.globalAlpha = Math.max(0, 1 - k / c.trail) * (c.gold ? 0.8 : 0.7);
-            ctx.fillStyle = k < 3 ? lead : base;
+            ctx.globalAlpha = Math.max(0.14, 1 - k / c.trail) * (c.gold ? 0.95 : 0.9);
+            ctx.fillStyle = k < 4 ? lead : base;
             ctx.shadowBlur = 0;
           }
           ctx.fillText(ch, c.x, yy);
