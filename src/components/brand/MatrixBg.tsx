@@ -46,14 +46,15 @@ export function MatrixBg() {
       canvas.height = Math.floor(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       font = w < 640 ? 15 : 17;
-      const gap = font * 1.7; // sparse so the base image shows through
+      const gap = font * 1.35; // denser
       const n = Math.floor(w / gap);
       cols = Array.from({ length: n }, (_, i) => ({
         x: Math.round(i * gap + gap / 2),
         y: rand(-h, 0),
-        speed: rand(40, 120), // px/sec; radial scaling applied per-frame
+        // speed scales with viewport height so it doesn't crawl on tall desktops
+        speed: rand(0.22, 0.5) * h, // px/sec; radial scaling applied per-frame
         gold: Math.random() < 0.22,
-        trail: Math.floor(rand(7, 16)),
+        trail: Math.floor(rand(8, 18)),
         word: Math.random() < 0.18,
         off: Math.floor(Math.random() * 10),
       }));
@@ -76,7 +77,7 @@ export function MatrixBg() {
       // falling code columns (parallax: slower near center, faster at edges)
       for (const c of cols) {
         const edge = Math.abs(c.x - cx()) / (w / 2); // 0 center → 1 edge
-        const sp = c.speed * (0.55 + edge * 0.9);
+        const sp = c.speed * (0.8 + edge * 0.6); // center a touch slower, edges faster
         c.y += sp * dt;
         if (c.y - c.trail * font > h) {
           c.y = rand(-h * 0.5, 0);
