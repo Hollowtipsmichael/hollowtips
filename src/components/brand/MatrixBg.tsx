@@ -26,7 +26,7 @@ export function MatrixBg() {
     const GREEN_DIM = "#1faa59";
     const GOLD = "#F5D061";
     const GOLD_DIM = "#D4AF37";
-    const GLYPHS = "HOLLOWTIPS0123456789".split("");
+    const GLYPHS = "HOLLOWTIPS".split(""); // brand letters only, no numbers
 
     let w = 0, h = 0, dpr = 1, raf = 0, last = 0, running = true;
     let font = 16;
