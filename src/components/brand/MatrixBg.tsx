@@ -3,11 +3,15 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Hollowtips Matrix background — ported faithfully from the client's
+ * Hollowtips Matrix background — ported from the client's updated
  * "Hollowtips Matrix Background" design handoff (claude.ai/design).
- * Three canvas layers (blurred far rain + bright near rain + gold particles)
- * with mouse/tilt parallax and a center-darken vignette. Defaults match the
- * design: rain=Dense, gold=Balanced, parallax=Cinematic, centerDarken=Subtle.
+ * Three canvas layers (blurred far rain + bright near rain + gold particles &
+ * luminous streaks) with mouse/tilt parallax + a center-darken vignette.
+ * Brand letters only (no numbers/symbols). Defaults: Dense / Balanced /
+ * Cinematic / Subtle / particles on.
+ *
+ * Near-rain font kept at 20px (not the design's 28px) per earlier feedback that
+ * the larger glyphs read as "zoomed in".
  */
 export function MatrixBg() {
   const backRef = useRef<HTMLCanvasElement>(null);
@@ -23,7 +27,7 @@ export function MatrixBg() {
     const isMobile = window.matchMedia("(max-width:760px)").matches;
     const OVER = 90;
     const WORD = "HOLLOWTIPS";
-    const CH = "HOLLOWTIPSHOLLOWTIPSHOLLOWTIPS0123456789#%$/<>".split("");
+    const CH = "HOLLOWTIPS".split("");
     const glyph = (cell: number, seed: number, bucket: number) => {
       if (seed < 0) return WORD[((cell % WORD.length) + WORD.length) % WORD.length];
       const h = Math.abs(((cell * 73856093) ^ (seed * 19349663) ^ (bucket * 83492791)) % CH.length);
@@ -31,7 +35,7 @@ export function MatrixBg() {
     };
 
     // config (design defaults)
-    const dens = "Dense", gold = "Balanced", par = "Cinematic", showP = true;
+    const showP = true;
     const densMul = 0.85; // Dense
     const fade = 0.05; // Dense
     const goldBack = 0.08; // Balanced
@@ -39,7 +43,7 @@ export function MatrixBg() {
     const parScale = 1; // Cinematic
 
     const bfs = isMobile ? 12 : 14;
-    const ffs = isMobile ? 16 : 20; // finer near-rain (less "zoomed in")
+    const ffs = isMobile ? 16 : 20;
     let W = 0, H = 0, dpr = 1;
     let bCols: any[] = [], fCols: any[] = [], particles: any[] = [], streaks: any[] = [];
     const rng = () => Math.random();
@@ -48,9 +52,9 @@ export function MatrixBg() {
       c.gold = rng() < goldBack;
       c.word = rng() < 0.55;
       c.depth = 0.4 + rng() * 0.6;
-      c.v = (0.1 + rng() * 0.2) * (0.6 + c.depth * 0.5);
+      c.v = (0.08 + rng() * 0.16) * (0.6 + c.depth * 0.5);
       const exb = Math.min(1, Math.abs((c.x - W / 2) / (W / 2)));
-      c.v *= 0.5 + exb * exb * 1.2;
+      c.v *= 0.55 + exb * exb * 0.9;
       c.seed = c.word ? -1 : (rng() * 1e6) | 0;
       c.d = -rng() * (H / bfs) * 0.7;
     };
@@ -59,9 +63,9 @@ export function MatrixBg() {
       c.word = rng() < 0.78;
       c.trail = 10 + ((rng() * 16) | 0);
       c.alpha = 0.6 + rng() * 0.4;
-      c.v = 0.18 + rng() * 0.32;
+      c.v = 0.14 + rng() * 0.25;
       const exf = Math.min(1, Math.abs((c.x - W / 2) / (W / 2)));
-      c.v *= 0.55 + exf * exf * 1.15;
+      c.v *= 0.6 + exf * exf * 0.85;
       c.seed = c.word ? -1 : (rng() * 1e6) | 0;
       c.d = -rng() * 14;
     };
@@ -76,7 +80,7 @@ export function MatrixBg() {
         cv.width = Math.floor(W * dpr); cv.height = Math.floor(H * dpr);
         cv.getContext("2d")!.setTransform(dpr, 0, 0, dpr, 0, 0);
       });
-      back.style.filter = isMobile ? "blur(0.7px)" : "blur(1.3px)";
+      back.style.filter = isMobile ? "blur(1px)" : "blur(2px)";
       bctx.fillStyle = "#000"; bctx.fillRect(0, 0, W, H);
 
       const bStep = bfs * densMul;
@@ -84,18 +88,19 @@ export function MatrixBg() {
       bCols = [];
       for (let i = 0; i < bN; i++) { const c: any = { x: i * bStep + (rng() * bStep * 0.3) }; resetBack(c); c.d = rng() * (H / bfs); bCols.push(c); }
 
-      const fStep = ffs * 1.6;
+      const fStep = ffs * 1.95 * 0.85; // Dense
       const fN = Math.max(1, Math.floor(W / fStep));
       fCols = [];
       for (let i = 0; i < fN; i++) { const c: any = { x: i * fStep + (rng() - 0.5) * fStep * 0.4 }; resetFront(c); c.d = rng() * (H / ffs); fCols.push(c); }
 
-      const pN = !showP ? 0 : (isMobile ? 26 : 64);
+      const pN = !showP ? 0 : (isMobile ? 38 : 88);
       particles = [];
       for (let i = 0; i < pN; i++) particles.push({
         x: rng() * W, y: rng() * H, vy: -(0.12 + rng() * 0.45), vx: (rng() - 0.5) * 0.18,
-        r: 0.7 + rng() * 1.9, a: 0.25 + rng() * 0.55, ph: rng() * 1000,
+        r: 0.9 + rng() * 2.3, a: 0.35 + rng() * 0.55, ph: rng() * 1000,
       });
       streaks = [];
+      if (showP) for (let i = 0; i < 4; i++) streaks.push({ x: rng() * W, y: rng() * H, len: 260 + rng() * 240, sp: 2.4 + rng() * 3, life: 0.4 + rng() * 0.6 });
     };
 
     const drawBack = (t: number) => {
@@ -108,9 +113,9 @@ export function MatrixBg() {
         const cell = Math.floor(c.d);
         const y = cell * bfs;
         const ch = glyph(cell, c.seed, bucket);
-        if (rng() < 0.022) bctx.fillStyle = "rgba(198,255,208,0.88)";
-        else if (c.gold) bctx.fillStyle = "rgba(206,164,72," + (0.78 * c.depth) + ")";
-        else bctx.fillStyle = "rgba(32,134,64," + (0.26 + 0.5 * c.depth) + ")";
+        if (rng() < 0.02) bctx.fillStyle = "rgba(206,255,224,0.85)";
+        else if (c.gold) bctx.fillStyle = "rgba(198,158,74," + (0.72 * c.depth) + ")";
+        else bctx.fillStyle = "rgba(22,128,82," + (0.24 + 0.5 * c.depth) + ")";
         bctx.fillText(ch, c.x, y);
         c.d += c.v;
         if (y > H && rng() > 0.965) resetBack(c);
@@ -124,15 +129,16 @@ export function MatrixBg() {
       fctx.font = ffs + "px 'Courier New', ui-monospace, monospace";
       for (const c of fCols) {
         const head = Math.floor(c.d);
-        if (c.gold) { fctx.shadowColor = "rgba(242,198,98,0.75)"; fctx.shadowBlur = 12; } else { fctx.shadowColor = "rgba(60,210,110,0.35)"; fctx.shadowBlur = 4; }
+        if (c.gold) { fctx.shadowColor = "rgba(246,202,104,0.85)"; fctx.shadowBlur = 14; } else { fctx.shadowColor = "rgba(50,225,140,0.45)"; fctx.shadowBlur = 6; }
         for (let i = 0; i < c.trail; i++) {
           const cell = head - i;
           const y = cell * ffs;
           if (y < -ffs || y > H) continue;
-          const a = (1 - i / c.trail) * c.alpha;
+          const a = Math.pow(1 - i / c.trail, 1.35) * c.alpha;
           const ch = glyph(cell, c.seed, bucket);
-          if (i === 0) fctx.fillStyle = c.gold ? "rgba(255,241,190," + c.alpha + ")" : "rgba(212,255,216," + c.alpha + ")";
-          else fctx.fillStyle = c.gold ? "rgba(238,194,90," + a + ")" : "rgba(50,176,90," + a + ")";
+          if (i === 0) fctx.fillStyle = c.gold ? "rgba(255,248,214," + Math.min(1, c.alpha + 0.15) + ")" : "rgba(232,255,236," + Math.min(1, c.alpha + 0.15) + ")";
+          else if (i === 1) fctx.fillStyle = c.gold ? "rgba(252,224,150," + a + ")" : "rgba(150,248,186," + a + ")";
+          else fctx.fillStyle = c.gold ? "rgba(226,180,82," + a + ")" : "rgba(28,184,104," + a + ")";
           fctx.fillText(ch, c.x, y);
         }
         c.d += c.v;
@@ -155,19 +161,27 @@ export function MatrixBg() {
         pctx.fill();
       }
       pctx.shadowBlur = 0;
-      if (showP && rng() < 0.006 && streaks.length < 3) {
-        streaks.push({ x: rng() * W, y: -40, len: 120 + rng() * 160, sp: 7 + rng() * 9, life: 1 });
+      if (showP && rng() < 0.02 && streaks.length < 6) {
+        streaks.push({ x: rng() * W, y: -60, len: 260 + rng() * 240, sp: 2.4 + rng() * 3, life: 1 });
       }
       for (let i = streaks.length - 1; i >= 0; i--) {
         const s = streaks[i];
-        s.y += s.sp; s.life -= 0.006;
+        s.y += s.sp; s.life -= 0.0035;
+        const f = Math.min(1, s.life * 1.6);
         const g = pctx.createLinearGradient(s.x, s.y - s.len, s.x, s.y);
-        g.addColorStop(0, "rgba(250,220,130,0)");
-        g.addColorStop(0.7, "rgba(250,222,140," + (0.5 * s.life) + ")");
-        g.addColorStop(1, "rgba(255,244,200," + (0.85 * s.life) + ")");
-        pctx.strokeStyle = g; pctx.lineWidth = 1.6;
-        pctx.shadowColor = "rgba(250,210,120,0.8)"; pctx.shadowBlur = 8;
+        g.addColorStop(0, "rgba(252,226,150,0)");
+        g.addColorStop(0.55, "rgba(252,222,140," + (0.35 * f) + ")");
+        g.addColorStop(0.92, "rgba(255,238,180," + (0.85 * f) + ")");
+        g.addColorStop(1, "rgba(255,250,224," + f + ")");
+        pctx.strokeStyle = g; pctx.lineWidth = 2.2; pctx.lineCap = "round";
+        pctx.shadowColor = "rgba(250,206,110,0.95)"; pctx.shadowBlur = 14;
         pctx.beginPath(); pctx.moveTo(s.x, s.y - s.len); pctx.lineTo(s.x, s.y); pctx.stroke();
+        pctx.shadowBlur = 0;
+        // bright glowing head point
+        pctx.beginPath();
+        pctx.fillStyle = "rgba(255,250,228," + f + ")";
+        pctx.shadowColor = "rgba(252,212,120,1)"; pctx.shadowBlur = 22;
+        pctx.arc(s.x, s.y, 2.6, 0, 6.2832); pctx.fill();
         pctx.shadowBlur = 0;
         if (s.life <= 0 || s.y - s.len > H) streaks.splice(i, 1);
       }
@@ -231,7 +245,6 @@ export function MatrixBg() {
       <canvas ref={backRef} aria-hidden="true" style={{ position: "absolute", pointerEvents: "none", zIndex: 0, willChange: "transform" }} />
       <canvas ref={frontRef} aria-hidden="true" style={{ position: "absolute", pointerEvents: "none", zIndex: 1, willChange: "transform" }} />
       <canvas ref={partRef} aria-hidden="true" style={{ position: "absolute", pointerEvents: "none", zIndex: 2, willChange: "transform" }} />
-      {/* center-darken vignette (Subtle) */}
       <div
         aria-hidden="true"
         style={{
