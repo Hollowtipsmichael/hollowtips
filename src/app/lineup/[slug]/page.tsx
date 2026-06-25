@@ -170,11 +170,14 @@ export default async function ProductDetailPage({
               {video.kind === "file" ? (
                 <video
                   src={video.embedUrl}
-                  controls
+                  autoPlay
+                  muted
+                  loop
                   playsInline
-                  preload="metadata"
+                  preload="auto"
                   poster={art || undefined}
-                  className="h-full w-full bg-black object-contain"
+                  disablePictureInPicture
+                  className="h-full w-full bg-black object-cover"
                 />
               ) : (
                 <iframe

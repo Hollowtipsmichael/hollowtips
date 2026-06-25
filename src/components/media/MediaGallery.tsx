@@ -198,6 +198,7 @@ export function MediaGallery({
                       src={v.embedUrl}
                       controls
                       autoPlay
+                      loop
                       playsInline
                       preload="metadata"
                       className="h-full w-full bg-black object-contain"
