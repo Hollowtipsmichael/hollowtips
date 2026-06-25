@@ -11,14 +11,10 @@ export const metadata = {
 export default function HomeVerifyPage() {
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-black px-5 py-10 text-white">
-      {/* Cinematic HOLLOWTIPS Matrix video backdrop + gold particles */}
+      {/* Hollowtips Matrix background (design handoff) — includes its own vignette */}
       <div className="absolute inset-0 z-0">
         <MatrixBg />
       </div>
-      {/* darken the center behind the card (readability + hides the bg logo);
-          edges stay bright/intense with more motion */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_52%_64%_at_center,rgba(0,0,0,0.92)_0%,rgba(0,0,0,0.6)_40%,rgba(0,0,0,0.15)_68%,transparent_85%)]" />
-      <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-black/55 via-transparent to-black/60" />
 
       <div className="relative z-20 w-full max-w-md animate-fade-in rounded-3xl border border-gold/15 bg-black/55 p-6 text-center shadow-[0_0_80px_rgba(0,0,0,0.85)] backdrop-blur-md sm:p-8">
         <div className="mb-7 flex justify-center">
