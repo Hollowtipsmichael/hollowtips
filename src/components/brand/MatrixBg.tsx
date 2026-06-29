@@ -36,7 +36,7 @@ export function MatrixBg() {
 
     // config (design defaults)
     const showP = true;
-    const densMul = 0.85; // Dense
+    const densMul = 0.45; // ~2× back columns (fill the black above/below the card)
     const fade = 0.05; // Dense
     const goldBack = 0.08; // Balanced
     const goldFront = 0.33; // Balanced
@@ -88,7 +88,7 @@ export function MatrixBg() {
       bCols = [];
       for (let i = 0; i < bN; i++) { const c: any = { x: i * bStep + (rng() * bStep * 0.3) }; resetBack(c); c.d = rng() * (H / bfs); bCols.push(c); }
 
-      const fStep = ffs * 1.95 * 0.85; // Dense
+      const fStep = ffs * 1.95 * 0.85 * 0.5; // ~2× near columns (less black)
       const fN = Math.max(1, Math.floor(W / fStep));
       fCols = [];
       for (let i = 0; i < fN; i++) { const c: any = { x: i * fStep + (rng() - 0.5) * fStep * 0.4 }; resetFront(c); c.d = rng() * (H / ffs); fCols.push(c); }
