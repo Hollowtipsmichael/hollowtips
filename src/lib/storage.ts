@@ -1,6 +1,7 @@
 import { mkdir, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
+import { optimizeVideo } from "./transcode";
 
 /**
  * File storage for product media.
@@ -77,8 +78,14 @@ export async function saveUpload(
 
   await mkdir(UPLOAD_DIR, { recursive: true });
   const filename = `${randomUUID()}.${ext}`;
+  const fullPath = path.join(UPLOAD_DIR, filename);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(UPLOAD_DIR, filename), buffer);
+  await writeFile(fullPath, buffer);
+
+  // Web-optimize videos (1080p, faststart, good quality) so they autoplay fast.
+  if (kind === "video") {
+    await optimizeVideo(fullPath);
+  }
 
   return { url: `${PUBLIC_PREFIX}/${filename}` };
 }
