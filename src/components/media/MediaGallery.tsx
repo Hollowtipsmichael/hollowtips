@@ -190,10 +190,11 @@ export function MediaGallery({
               >
                 <X className="h-5 w-5" />
               </button>
-              <div className="aspect-video w-full overflow-hidden rounded-2xl border border-gold/30 bg-black shadow-gold-glow">
-                {(() => {
-                  const v = parseVideo(playing.videoUrl);
-                  return v.kind === "file" ? (
+              {(() => {
+                const v = parseVideo(playing.videoUrl);
+                return v.kind === "file" ? (
+                  // adapts to the video's format (landscape or vertical reel)
+                  <div className="mx-auto w-fit max-w-full overflow-hidden rounded-2xl border border-gold/30 bg-black shadow-gold-glow">
                     <video
                       src={v.embedUrl}
                       controls
@@ -201,9 +202,11 @@ export function MediaGallery({
                       loop
                       playsInline
                       preload="metadata"
-                      className="h-full w-full bg-black object-contain"
+                      className="max-h-[78vh] w-auto max-w-full bg-black"
                     />
-                  ) : (
+                  </div>
+                ) : (
+                  <div className="aspect-video w-full overflow-hidden rounded-2xl border border-gold/30 bg-black shadow-gold-glow">
                     <iframe
                       src={v.embedUrl}
                       title={playing.title}
@@ -211,9 +214,9 @@ export function MediaGallery({
                       allowFullScreen
                       className="h-full w-full"
                     />
-                  );
-                })()}
-              </div>
+                  </div>
+                );
+              })()}
               <p className="mt-3 text-center font-condensed text-lg font-bold uppercase tracking-wide text-white">
                 {playing.title}
               </p>

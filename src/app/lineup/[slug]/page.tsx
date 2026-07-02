@@ -166,8 +166,10 @@ export default async function ProductDetailPage({
             <h2 className="mb-4 font-gta text-2xl uppercase tracking-wide text-white sm:text-3xl">
               Watch
             </h2>
-            <div className="aspect-video w-full overflow-hidden rounded-3xl border border-gold/25 bg-black shadow-gold-glow">
-              {video.kind === "file" ? (
+            {video.kind === "file" ? (
+              // adapts to the video's own format: landscape = full width,
+              // portrait/vertical (reels) = tall + centered, never cropped
+              <div className="mx-auto w-fit max-w-full overflow-hidden rounded-3xl border border-gold/25 bg-black shadow-gold-glow">
                 <video
                   src={video.embedUrl}
                   autoPlay
@@ -177,9 +179,11 @@ export default async function ProductDetailPage({
                   preload="auto"
                   poster={art || undefined}
                   disablePictureInPicture
-                  className="h-full w-full bg-black object-cover"
+                  className="max-h-[78vh] w-auto max-w-full bg-black"
                 />
-              ) : (
+              </div>
+            ) : (
+              <div className="aspect-video w-full overflow-hidden rounded-3xl border border-gold/25 bg-black shadow-gold-glow">
                 <iframe
                   src={video.embedUrl}
                   title={product.name}
@@ -187,8 +191,8 @@ export default async function ProductDetailPage({
                   allowFullScreen
                   className="h-full w-full"
                 />
-              )}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
