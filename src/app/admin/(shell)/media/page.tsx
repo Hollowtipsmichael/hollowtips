@@ -92,7 +92,7 @@ export default async function AdminMediaPage() {
                     <div className="flex items-center gap-3 text-xs text-muted">
                       <span>{m.publishedAt ? m.publishedAt.toLocaleDateString() : "—"}</span>
                       {(m.type === "video" || m.type === "wallpaper") && (
-                        <span className="inline-flex items-center gap-1 font-medium text-white/70">
+                        <span className="inline-flex items-center gap-1 font-medium text-fg/70">
                           <Eye className="h-3.5 w-3.5" />
                           {m.viewCount.toLocaleString()} views
                         </span>
