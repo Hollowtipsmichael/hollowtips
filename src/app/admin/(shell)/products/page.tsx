@@ -21,7 +21,7 @@ export default async function ProductsPage() {
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
             Catalog
           </p>
-          <h2 className="font-display text-3xl tracking-wide text-fg">
+          <h2 className="font-condensed text-3xl tracking-wide text-fg">
             Products{" "}
             <span className="text-muted">({products.length})</span>
           </h2>
@@ -77,7 +77,7 @@ export default async function ProductsPage() {
               {/* Body */}
               <div className="space-y-3 p-4">
                 <div>
-                  <h3 className="font-display text-lg leading-tight tracking-wide text-fg">
+                  <h3 className="font-condensed text-lg leading-tight tracking-wide text-fg">
                     {p.name}
                   </h3>
                   {p.strainName && (

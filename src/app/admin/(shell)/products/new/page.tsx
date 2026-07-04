@@ -15,7 +15,7 @@ export default function NewProductPage() {
           <ArrowLeft className="h-4 w-4" />
           Back to products
         </Link>
-        <h2 className="font-display text-3xl tracking-wide text-fg">
+        <h2 className="font-condensed text-3xl tracking-wide text-fg">
           New Product
         </h2>
       </div>

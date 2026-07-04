@@ -54,7 +54,7 @@ export default async function DashboardPage() {
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
           Hollowtips Verify
         </p>
-        <h2 className="font-display text-3xl tracking-wide text-fg sm:text-4xl">
+        <h2 className="font-condensed text-3xl tracking-wide text-fg sm:text-4xl">
           Welcome back, {firstName}
         </h2>
         <p className="max-w-2xl text-sm text-muted">
@@ -103,7 +103,7 @@ export default async function DashboardPage() {
       {/* Recent scans — styled empty state */}
       <section aria-label="Recent scans" className="card grain p-6 sm:p-8">
         <div className="mb-5 flex items-center justify-between">
-          <h3 className="font-display text-xl tracking-wide text-fg">
+          <h3 className="font-condensed text-xl tracking-wide text-fg">
             Recent Scans
           </h3>
           {recentScans.length > 0 && (

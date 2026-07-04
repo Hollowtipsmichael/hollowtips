@@ -87,7 +87,7 @@ export default async function PrintCodesPage({
               key={l.code}
               className="flex break-inside-avoid flex-col items-center gap-2 rounded-xl border border-[#D4AF37]/50 bg-white p-3 text-center"
             >
-              <span className="font-display text-sm tracking-[0.18em] text-[#A67C00]">
+              <span className="font-condensed text-sm tracking-[0.18em] text-[#A67C00]">
                 HOLLOWTIPS
               </span>
               <div className="relative">

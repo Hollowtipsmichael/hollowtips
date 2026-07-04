@@ -44,7 +44,7 @@ export default async function ScansPage({
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
           Activity
         </p>
-        <h2 className="font-display text-3xl tracking-wide text-fg">
+        <h2 className="font-condensed text-3xl tracking-wide text-fg">
           Scans <span className="text-muted">({total})</span>
         </h2>
         <p className="text-sm text-muted">

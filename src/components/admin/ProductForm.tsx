@@ -120,7 +120,7 @@ export function ProductForm({
         {/* Main details */}
         <div className="space-y-5 lg:col-span-2">
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
               Details
             </h3>
             <div className="space-y-4">
@@ -221,7 +221,7 @@ export function ProductForm({
 
           {/* Social links */}
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
               Social links
             </h3>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -245,7 +245,7 @@ export function ProductForm({
         {/* Side column: media + status */}
         <div className="space-y-5">
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
               Media
             </h3>
             <div className="space-y-4">
@@ -276,7 +276,7 @@ export function ProductForm({
           </div>
 
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
               Status
             </h3>
             <Toggle

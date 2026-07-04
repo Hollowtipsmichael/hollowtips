@@ -22,7 +22,7 @@ export default async function AdminMediaPage() {
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
             Content
           </p>
-          <h2 className="font-display text-3xl tracking-wide text-fg">
+          <h2 className="font-condensed text-3xl tracking-wide text-fg">
             Media <span className="text-muted">({items.length})</span>
           </h2>
           <p className="text-sm text-muted">
@@ -78,7 +78,7 @@ export default async function AdminMediaPage() {
                 </div>
                 <div className="space-y-3 p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-display text-base leading-tight tracking-wide text-fg">
+                    <h3 className="font-condensed text-base leading-tight tracking-wide text-fg">
                       {m.title}
                     </h3>
                     <StatusPill active={m.isActive} />

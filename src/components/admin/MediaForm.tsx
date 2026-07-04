@@ -131,7 +131,7 @@ export function MediaForm({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-5 lg:col-span-2">
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">Details</h3>
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">Details</h3>
             <div className="space-y-4">
               {/* Type */}
               <Field label="Type">
@@ -267,7 +267,7 @@ export function MediaForm({
 
         <div className="space-y-5">
           <div className="card p-5 sm:p-6">
-            <h3 className="mb-4 font-display text-lg tracking-wide text-fg">Thumbnail</h3>
+            <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">Thumbnail</h3>
             <MediaUploadField kind="image" value={form.thumbnailUrl} onChange={(url) => set("thumbnailUrl", url)} aspect="aspect-video" />
             <p className="mt-2 text-xs text-muted">
               {isVideo
@@ -278,7 +278,7 @@ export function MediaForm({
             </p>
           </div>
           <div className="card space-y-4 p-5 sm:p-6">
-            <h3 className="font-display text-lg tracking-wide text-fg">Options</h3>
+            <h3 className="font-condensed text-lg tracking-wide text-fg">Options</h3>
             <Toggle checked={form.isNew} onChange={(v) => set("isNew", v)} label="NEW badge" description="Highlight as new" />
             <Toggle checked={form.isActive} onChange={(v) => set("isActive", v)} label="Active" description="Visible on /media" />
             <Field label="Sort order" htmlFor="sort" hint="Lower shows first">

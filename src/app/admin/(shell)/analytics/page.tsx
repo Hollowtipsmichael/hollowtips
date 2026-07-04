@@ -98,7 +98,7 @@ export default async function AnalyticsPage() {
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
           Insights
         </p>
-        <h2 className="font-display text-3xl tracking-wide text-fg">Analytics</h2>
+        <h2 className="font-condensed text-3xl tracking-wide text-fg">Analytics</h2>
       </div>
 
       <div className="rule-gold" />
@@ -114,13 +114,13 @@ export default async function AnalyticsPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="card p-5 lg:col-span-2">
-          <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
             Scans — last 14 days
           </h3>
           <ScansLineChart data={scansSeries} />
         </div>
         <div className="card p-5">
-          <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
             By device
           </h3>
           <DevicePieChart data={deviceData} />
@@ -129,13 +129,13 @@ export default async function AnalyticsPage() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="card p-5">
-          <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
             Codes by status
           </h3>
           <StatusBarChart data={statusData} />
         </div>
         <div className="card p-5">
-          <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
             Top countries
           </h3>
           {topCountries.length === 0 ? (
@@ -152,7 +152,7 @@ export default async function AnalyticsPage() {
           )}
         </div>
         <div className="card p-5">
-          <h3 className="mb-4 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-4 font-condensed text-lg tracking-wide text-fg">
             Top products
           </h3>
           {topProducts.length === 0 ? (

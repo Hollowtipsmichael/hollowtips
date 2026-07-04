@@ -48,7 +48,7 @@ export function StatCard({
               <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             </div>
           ) : (
-            <p className="font-display text-3xl leading-none tracking-wide text-fg">
+            <p className="font-condensed text-3xl leading-none tracking-wide text-fg">
               {value}
             </p>
           )}

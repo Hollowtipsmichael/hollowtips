@@ -70,7 +70,7 @@ export function CodeScansDialog({ code, codeId }: { code: string; codeId: string
             >
               <div className="flex items-center justify-between border-b border-subtle px-5 py-4">
                 <div>
-                  <h3 className="font-display text-lg tracking-wide text-fg">
+                  <h3 className="font-condensed text-lg tracking-wide text-fg">
                     Scan history
                   </h3>
                   <p className="font-mono text-xs text-muted">{code}</p>

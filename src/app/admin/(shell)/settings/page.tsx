@@ -54,7 +54,7 @@ export default async function SettingsPage() {
         <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
           Account
         </p>
-        <h2 className="font-display text-3xl tracking-wide text-fg">Settings</h2>
+        <h2 className="font-condensed text-3xl tracking-wide text-fg">Settings</h2>
         <p className="text-sm text-muted">
           Manage your admin profile and security.
         </p>
@@ -70,7 +70,7 @@ export default async function SettingsPage() {
             {initials(name)}
           </span>
           <div className="min-w-0">
-            <h3 className="font-display text-2xl tracking-wide text-fg">
+            <h3 className="font-condensed text-2xl tracking-wide text-fg">
               {name}
             </h3>
             <p className="truncate text-sm text-muted">{email}</p>
@@ -85,7 +85,7 @@ export default async function SettingsPage() {
       {/* Details + password */}
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <div className="card p-6">
-          <h3 className="mb-5 flex items-center gap-2 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-5 flex items-center gap-2 font-condensed text-lg tracking-wide text-fg">
             <User className="h-4 w-4 text-gold" />
             Profile details
           </h3>
@@ -111,7 +111,7 @@ export default async function SettingsPage() {
         </div>
 
         <div className="card p-6">
-          <h3 className="mb-1 flex items-center gap-2 font-display text-lg tracking-wide text-fg">
+          <h3 className="mb-1 flex items-center gap-2 font-condensed text-lg tracking-wide text-fg">
             <ShieldCheck className="h-4 w-4 text-gold" />
             Change password
           </h3>

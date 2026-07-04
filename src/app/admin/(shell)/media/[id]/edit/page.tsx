@@ -31,7 +31,7 @@ export default async function EditMediaPage({
           <ArrowLeft className="h-4 w-4" />
           Back to media
         </Link>
-        <h2 className="font-display text-3xl tracking-wide text-fg">{m.title}</h2>
+        <h2 className="font-condensed text-3xl tracking-wide text-fg">{m.title}</h2>
       </div>
       <div className="rule-gold" />
       <MediaForm

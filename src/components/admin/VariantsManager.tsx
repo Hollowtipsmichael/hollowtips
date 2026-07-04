@@ -114,7 +114,7 @@ export function VariantsManager({
   return (
     <div className="card p-5 sm:p-6">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="flex items-center gap-2 font-display text-lg tracking-wide text-fg">
+        <h3 className="flex items-center gap-2 font-condensed text-lg tracking-wide text-fg">
           <Layers className="h-4 w-4 text-gold" />
           Variants
         </h3>

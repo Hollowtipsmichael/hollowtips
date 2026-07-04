@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { MatrixRain } from "@/components/brand/MatrixRain";
+import { MatrixBg } from "@/components/brand/MatrixBg";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { LoginForm } from "@/components/admin/LoginForm";
 
@@ -16,13 +16,10 @@ export default async function LoginPage() {
 
   return (
     <main className="relative grid min-h-screen place-items-center overflow-hidden bg-black px-4 py-12">
-      {/* Cinematic code-rain backdrop */}
+      {/* Same cinematic Matrix backdrop as the homepage (includes its vignette) */}
       <div className="absolute inset-0 z-0">
-        <MatrixRain opacity={0.45} />
+        <MatrixBg />
       </div>
-      {/* Vignette + radial gold glow to keep the card legible */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.85)_100%)]" />
 
       {/* Login card */}
       <div className="relative z-20 w-full max-w-md animate-fade-in">

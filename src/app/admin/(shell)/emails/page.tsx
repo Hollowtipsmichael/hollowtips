@@ -20,7 +20,7 @@ export default async function EmailsPage() {
           <p className="text-sm font-medium uppercase tracking-[0.3em] text-gold">
             Marketing
           </p>
-          <h2 className="font-display text-3xl tracking-wide text-fg">
+          <h2 className="font-condensed text-3xl tracking-wide text-fg">
             Emails <span className="text-muted">({emails.length})</span>
           </h2>
           <p className="text-sm text-muted">

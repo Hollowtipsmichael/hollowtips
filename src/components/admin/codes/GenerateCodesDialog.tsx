@@ -95,7 +95,7 @@ export function GenerateCodesDialog({
                   <Sparkles className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="font-display text-lg tracking-wide text-fg">
+                  <h3 className="font-condensed text-lg tracking-wide text-fg">
                     Generate codes
                   </h3>
                   <p className="text-xs text-muted">

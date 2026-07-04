@@ -33,7 +33,7 @@ export default async function EditProductPage({
             <ArrowLeft className="h-4 w-4" />
             Back to products
           </Link>
-          <h2 className="font-display text-3xl tracking-wide text-fg">
+          <h2 className="font-condensed text-3xl tracking-wide text-fg">
             {product.name}
           </h2>
         </div>

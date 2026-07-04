@@ -71,7 +71,7 @@ export function ImportCodesDialog() {
           >
             <div className="mb-4 flex items-start justify-between">
               <div>
-                <h3 className="font-display text-lg tracking-wide text-fg">
+                <h3 className="font-condensed text-lg tracking-wide text-fg">
                   Import codes (CSV)
                 </h3>
                 <p className="text-xs text-muted">

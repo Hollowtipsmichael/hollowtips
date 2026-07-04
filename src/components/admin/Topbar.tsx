@@ -50,7 +50,7 @@ export function Topbar({
         )}
       </button>
 
-      <h1 className="font-display text-xl tracking-wide text-fg">{title}</h1>
+      <h1 className="font-condensed text-xl tracking-wide text-fg">{title}</h1>
 
       <div className="ml-auto flex items-center gap-2 sm:gap-3">
         <ThemeToggle />
