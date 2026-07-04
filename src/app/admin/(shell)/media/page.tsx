@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clapperboard, Plus, Pencil, Play } from "lucide-react";
+import { Clapperboard, Plus, Pencil, Play, Download } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { parseVideo } from "@/lib/video";
 import { StatusPill } from "@/components/admin/StatusPill";
@@ -9,8 +9,10 @@ export const metadata = { title: "Media — Hollowtips Verify" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
+  // Most-downloaded first so the community's top picks surface (admin view
+  // only; the public /media order still uses sortOrder).
   const items = await prisma.mediaItem.findMany({
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    orderBy: [{ downloadCount: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
   });
 
   return (
@@ -82,9 +84,18 @@ export default async function AdminMediaPage() {
                     <StatusPill active={m.isActive} />
                   </div>
                   <div className="flex items-center justify-between border-t border-subtle pt-3">
-                    <span className="text-xs text-muted">
-                      {m.publishedAt ? m.publishedAt.toLocaleDateString() : "—"}
-                    </span>
+                    <div className="flex items-center gap-3 text-xs text-muted">
+                      <span>{m.publishedAt ? m.publishedAt.toLocaleDateString() : "—"}</span>
+                      {(m.type === "download" || m.type === "wallpaper") && (
+                        <span
+                          className="inline-flex items-center gap-1 font-medium text-gold"
+                          title="Downloads"
+                        >
+                          <Download className="h-3.5 w-3.5" />
+                          {m.downloadCount.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-center gap-2">
                       <Link
                         href={`/admin/media/${m.id}/edit`}

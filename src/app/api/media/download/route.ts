@@ -57,6 +57,11 @@ export async function GET(req: Request) {
   const ext = (filename.split(".").pop() || "bin").toLowerCase();
   const downloadName = `${slugify(item.title)}.${ext}`;
 
+  // Count the download (only reached once the file is confirmed readable).
+  await prisma.mediaItem
+    .update({ where: { id }, data: { downloadCount: { increment: 1 } } })
+    .catch(() => {});
+
   return new NextResponse(new Uint8Array(data), {
     headers: {
       "Content-Type": MIME[ext] ?? "application/octet-stream",
