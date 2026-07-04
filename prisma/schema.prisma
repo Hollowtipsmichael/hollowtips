@@ -143,6 +143,7 @@ model MediaItem {
   isActive     Boolean   @default(true)
   sortOrder    Int       @default(0)
   downloadCount Int      @default(0) // # of times its file was downloaded
+  viewCount    Int       @default(0) // # of times it was opened/played
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 

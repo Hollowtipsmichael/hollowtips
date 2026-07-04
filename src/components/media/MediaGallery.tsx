@@ -48,6 +48,20 @@ function clearNowPlaying() {
   }
 }
 
+// Record a view (open/play) — fire-and-forget, survives navigation.
+function recordView(id: string) {
+  try {
+    const body = JSON.stringify({ id });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon("/api/media/view", new Blob([body], { type: "application/json" }));
+    } else {
+      fetch("/api/media/view", { method: "POST", body, keepalive: true, headers: { "Content-Type": "application/json" } });
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
 function fmtDate(s: string) {
   return new Date(s).toLocaleDateString(undefined, {
     year: "numeric",
@@ -191,9 +205,11 @@ export function MediaGallery({
               <button
                 key={m.id}
                 type="button"
-                onClick={() =>
-                  m.type === "video" ? setPlaying(m) : setViewing(m)
-                }
+                onClick={() => {
+                  recordView(m.id);
+                  if (m.type === "video") setPlaying(m);
+                  else setViewing(m);
+                }}
                 className={cardClass}
               >
                 {cardInner(m)}

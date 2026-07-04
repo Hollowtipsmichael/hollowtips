@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clapperboard, Plus, Pencil, Play, Download } from "lucide-react";
+import { Clapperboard, Plus, Pencil, Play, Download, Eye } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { parseVideo } from "@/lib/video";
 import { StatusPill } from "@/components/admin/StatusPill";
@@ -9,11 +9,16 @@ export const metadata = { title: "Media — Hollowtips Verify" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminMediaPage() {
-  // Most-downloaded first so the community's top picks surface (admin view
-  // only; the public /media order still uses sortOrder).
-  const items = await prisma.mediaItem.findMany({
-    orderBy: [{ downloadCount: "desc" }, { sortOrder: "asc" }, { createdAt: "desc" }],
-  });
+  // Most-engaged first (views + downloads) so the community's top picks surface
+  // in the admin view (the public /media order still uses sortOrder).
+  const items = (
+    await prisma.mediaItem.findMany({
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+    })
+  ).sort(
+    (a, b) =>
+      b.viewCount + b.downloadCount - (a.viewCount + a.downloadCount),
+  );
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -86,6 +91,15 @@ export default async function AdminMediaPage() {
                   <div className="flex items-center justify-between border-t border-subtle pt-3">
                     <div className="flex items-center gap-3 text-xs text-muted">
                       <span>{m.publishedAt ? m.publishedAt.toLocaleDateString() : "—"}</span>
+                      {(m.type === "video" || m.type === "wallpaper") && (
+                        <span
+                          className="inline-flex items-center gap-1 font-medium text-white/70"
+                          title="Views"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          {m.viewCount.toLocaleString()}
+                        </span>
+                      )}
                       {(m.type === "download" || m.type === "wallpaper") && (
                         <span
                           className="inline-flex items-center gap-1 font-medium text-gold"
