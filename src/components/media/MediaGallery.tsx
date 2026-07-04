@@ -24,6 +24,30 @@ function poster(m: MediaItemDTO): string | null {
   return m.thumbnailUrl; // download: optional preview
 }
 
+// Sets the iOS/Android lock-screen "Now Playing" card (art + title).
+function setNowPlaying(title: string) {
+  if (typeof navigator === "undefined" || !("mediaSession" in navigator)) return;
+  try {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title,
+      artist: "Hollowtips",
+      album: "Hollowtips Media",
+      artwork: [
+        { src: "/brand/nowplaying.jpg", sizes: "512x512", type: "image/jpeg" },
+        { src: "/brand/nowplaying-1024.jpg", sizes: "1024x1024", type: "image/jpeg" },
+      ],
+    });
+  } catch {
+    /* MediaMetadata unsupported — ignore */
+  }
+}
+
+function clearNowPlaying() {
+  if (typeof navigator !== "undefined" && "mediaSession" in navigator) {
+    navigator.mediaSession.metadata = null;
+  }
+}
+
 function fmtDate(s: string) {
   return new Date(s).toLocaleDateString(undefined, {
     year: "numeric",
@@ -52,6 +76,10 @@ export function MediaGallery({
   const [viewing, setViewing] = useState<MediaItemDTO | null>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+  // Clear the lock-screen Now Playing card when the player closes.
+  useEffect(() => {
+    if (!playing) clearNowPlaying();
+  }, [playing]);
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
@@ -202,6 +230,7 @@ export function MediaGallery({
                       loop
                       playsInline
                       preload="metadata"
+                      onPlay={() => setNowPlaying(playing.title)}
                       className="max-h-[78vh] w-auto max-w-full bg-black"
                     />
                   </div>
