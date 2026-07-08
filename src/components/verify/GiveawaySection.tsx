@@ -13,10 +13,16 @@ export function GiveawaySection({ note }: { note?: string }) {
         alt="Blockstar"
         className="mx-auto h-16 w-16 rounded-2xl"
       />
-      <h3 className="mt-4 font-condensed text-2xl font-black uppercase leading-none tracking-[1px] text-gold">
-        Win 1 of 100 GTA 6 Copies
+      <p className="mt-4 font-condensed text-[11px] font-bold uppercase tracking-[3px] text-gold/70">
+        Hollowtips × GTA VI Giveaway
+      </p>
+      <h3 className="mt-1.5 font-condensed text-2xl font-black uppercase leading-none tracking-[1px] text-gold">
+        Win 1 of 100 GTA VI Copies
       </h3>
-      <p className="mt-2 text-[13px] text-[#bbb]">Winner drawn November 19.</p>
+      <p className="mt-2 text-[13px] text-[#bbb]">
+        100 winners, selected at random. Free entry — join the email &amp; SMS
+        list. Selection Nov 19, 2026.
+      </p>
       {note && <p className="mt-2 text-xs text-[#888]">{note}</p>}
     </div>
   );

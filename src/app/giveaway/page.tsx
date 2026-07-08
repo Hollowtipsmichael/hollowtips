@@ -1,14 +1,22 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { MatrixRain } from "@/components/brand/MatrixRain";
 import { TheChamberForm } from "@/components/verify/TheChamberForm";
 
 export const metadata = {
-  title: "Win 1 of 100 GTA 6 Copies — Hollowtips",
+  title: "Win 1 of 100 GTA VI Copies — Hollowtips",
   description:
-    "Enter The Chamber for a chance to win 1 of 100 GTA 6 copies. Winner drawn November 19.",
+    "Hollowtips × GTA VI Giveaway. 100 copies, 100 winners at random. Free entry — join the email & SMS list. Selection November 19, 2026.",
 };
+
+const DETAILS = [
+  "No purchase necessary — entry is free",
+  "100 copies of Grand Theft Auto VI · 100 winners at random",
+  "Winner selection: November 19, 2026",
+  "Winners notified via email and SMS",
+  "One entry per person",
+];
 
 export default function GiveawayPage() {
   return (
@@ -31,20 +39,43 @@ export default function GiveawayPage() {
           className="mx-auto h-20 w-20 rounded-2xl"
         />
 
-        <h1 className="mt-5 font-condensed text-4xl font-black uppercase leading-[0.95] tracking-[1px] text-gold sm:text-5xl">
-          Win 1 of 100 GTA 6 Copies
+        <p className="mt-4 font-condensed text-xs font-bold uppercase tracking-[3px] text-gold/70">
+          Hollowtips × GTA VI Giveaway
+        </p>
+        <h1 className="mt-1.5 font-condensed text-4xl font-black uppercase leading-[0.95] tracking-[1px] text-gold sm:text-5xl">
+          Win 1 of 100 GTA VI Copies
         </h1>
         <p className="mx-auto mt-3 max-w-xs text-sm text-white/70">
-          Enter The Chamber below for your shot. Winner drawn{" "}
-          <span className="font-semibold text-white/90">November 19</span>.
+          100 copies of Grand Theft Auto VI. 100 winners, selected at random.
+          Level up with us.
         </p>
 
+        {/* The Chamber = email list + SMS alerts */}
         <div className="mt-7 rounded-2xl border border-gold/30 bg-black/70 p-5 backdrop-blur-xl">
+          <p className="mb-1 font-condensed text-lg font-bold uppercase tracking-wide text-white">
+            Join Free — Email &amp; SMS
+          </p>
+          <p className="mb-4 text-xs text-white/50">
+            Add your email and phone to be eligible. Both steps, 100% free.
+          </p>
           <TheChamberForm source="giveaway-page" />
         </div>
 
-        <p className="mt-5 text-[11px] text-white/40">
-          No purchase required to enter here.
+        {/* Key details */}
+        <ul className="mt-6 space-y-2 text-left">
+          {DETAILS.map((d) => (
+            <li key={d} className="flex items-start gap-2 text-[13px] text-white/70">
+              <Check className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span>{d}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 font-condensed text-sm font-bold uppercase tracking-[2px] text-gold">
+          Stay Vigilant. Level Up.
+        </p>
+        <p className="mt-1 text-[11px] uppercase tracking-[2px] text-white/40">
+          Hollowtips — Authentic · Original · Verified
         </p>
 
         <Link
@@ -55,7 +86,7 @@ export default function GiveawayPage() {
         </Link>
 
         <p className="mt-5 text-[11px] text-white/30">
-          21+ only · © {new Date().getFullYear()} Hollowtips
+          21+ only · No purchase necessary · © {new Date().getFullYear()} Hollowtips
         </p>
       </div>
     </main>
