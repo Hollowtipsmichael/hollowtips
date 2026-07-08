@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { syncToMailchimp } from "@/lib/mailchimp";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,9 +39,14 @@ export async function POST(req: Request) {
     },
   });
 
-  // Master-list webhook (Make / Klaviyo / Mailchimp) — one-line add once the
-  // client confirms the destination. Leads are stored in the DB meanwhile.
-  // await fetch(process.env.MASTER_LIST_WEBHOOK_URL, { method: "POST", ... });
+  // Master list → Mailchimp. Never blocks the response: the lead is already
+  // saved above, so a Mailchimp hiccup can't lose it or error the submit.
+  // No-ops until MAILCHIMP_API_KEY + MAILCHIMP_AUDIENCE_ID are set.
+  try {
+    await syncToMailchimp({ email, firstName, phone, source });
+  } catch (err) {
+    console.error("Mailchimp sync failed:", err);
+  }
 
   return NextResponse.json({ ok: true });
 }
