@@ -122,6 +122,7 @@ model EmailCapture {
   email      String
   name       String?
   phone      String?
+  source     String? // "verify-legit" | "verify-busted" | "giveaway-page" | null
   productId  String?
   product    Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   capturedAt DateTime @default(now())

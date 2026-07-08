@@ -10,10 +10,16 @@ export const dynamic = "force-dynamic";
 
 const title = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
 
+const TYPE_BADGE: Record<string, string> = {
+  INDICA: "border-strain-indica/50 text-strain-indica",
+  SATIVA: "border-strain-sativa/50 text-strain-sativa",
+  HYBRID: "border-strain-hybrid/50 text-strain-hybrid",
+};
+
 const TYPE_TINT: Record<string, string> = {
-  INDICA: "from-graffiti-pink/30",
-  SATIVA: "from-graffiti-lime/30",
-  HYBRID: "from-gold/30",
+  INDICA: "from-strain-indica/30",
+  SATIVA: "from-strain-sativa/30",
+  HYBRID: "from-strain-hybrid/30",
 };
 
 export async function generateMetadata({
@@ -95,7 +101,11 @@ export default async function ProductDetailPage({
               </div>
             )}
             {product.productType && (
-              <span className="absolute left-4 top-4 rounded-full border border-gold/40 bg-black/70 px-3 py-1 text-xs font-bold uppercase tracking-wide text-gold backdrop-blur">
+              <span
+                className={`absolute left-4 top-4 rounded-full border bg-black/70 px-3 py-1 text-xs font-bold uppercase tracking-wide backdrop-blur ${
+                  TYPE_BADGE[product.productType] || "border-gold/40 text-gold"
+                }`}
+              >
                 {product.productType}
               </span>
             )}

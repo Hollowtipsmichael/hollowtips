@@ -11,9 +11,16 @@ export const metadata = {
 };
 
 const TYPE_TINT: Record<string, string> = {
-  INDICA: "from-graffiti-pink/30",
-  SATIVA: "from-graffiti-lime/30",
-  HYBRID: "from-gold/30",
+  INDICA: "from-strain-indica/30",
+  SATIVA: "from-strain-sativa/30",
+  HYBRID: "from-strain-hybrid/30",
+};
+
+// Color-coded type pill (Sativa orange · Indica purple · Hybrid green).
+const TYPE_BADGE: Record<string, string> = {
+  INDICA: "border-strain-indica/50 text-strain-indica",
+  SATIVA: "border-strain-sativa/50 text-strain-sativa",
+  HYBRID: "border-strain-hybrid/50 text-strain-hybrid",
 };
 
 export default async function LineupPage() {
@@ -107,7 +114,11 @@ export default async function LineupPage() {
                     </div>
                   )}
                   {p.productType && (
-                    <span className="absolute left-2 top-2 rounded-full border border-gold/40 bg-black/70 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-gold backdrop-blur">
+                    <span
+                      className={`absolute left-2 top-2 rounded-full border bg-black/70 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide backdrop-blur ${
+                        TYPE_BADGE[p.productType] || "border-gold/40 text-gold"
+                      }`}
+                    >
                       {p.productType}
                     </span>
                   )}

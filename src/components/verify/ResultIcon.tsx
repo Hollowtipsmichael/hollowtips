@@ -1,8 +1,13 @@
-import { Check, X } from "lucide-react";
+import { Check, AlertTriangle } from "lucide-react";
 
+/**
+ * Verify result hero icon.
+ * LEGIT  → green checkmark (#22c55e) with soft pulsing rings.
+ * BUSTED → red pulsing alert triangle (#ef4444) with a one-shot shake.
+ */
 export function ResultIcon({ variant }: { variant: "busted" | "legit" }) {
   const legit = variant === "legit";
-  const color = legit ? "#34C759" : "#FF3B30";
+  const color = legit ? "#22c55e" : "#ef4444";
 
   return (
     <div className="relative grid h-[180px] w-[180px] place-items-center">
@@ -18,18 +23,18 @@ export function ResultIcon({ variant }: { variant: "busted" | "legit" }) {
       {/* icon circle */}
       <div
         className={`relative z-10 grid h-[88px] w-[88px] place-items-center rounded-full border-2 ${
-          legit ? "" : "ht-shake"
+          legit ? "" : "ht-shake ht-pulse"
         }`}
         style={{
-          backgroundColor: legit ? "rgba(52,199,89,0.12)" : "rgba(255,59,48,0.12)",
-          borderColor: legit ? "rgba(52,199,89,0.4)" : "rgba(255,59,48,0.4)",
+          backgroundColor: legit ? "rgba(34,197,94,0.12)" : "rgba(239,68,68,0.12)",
+          borderColor: legit ? "rgba(34,197,94,0.4)" : "rgba(239,68,68,0.4)",
           color,
         }}
       >
         {legit ? (
           <Check className="h-10 w-10" strokeWidth={2.5} />
         ) : (
-          <X className="h-10 w-10" strokeWidth={2.5} />
+          <AlertTriangle className="h-9 w-9" strokeWidth={2.5} />
         )}
       </div>
     </div>

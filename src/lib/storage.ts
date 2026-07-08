@@ -1,7 +1,7 @@
 import { mkdir, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { optimizeVideo } from "./transcode";
+import { optimizeVideo, optimizeImage } from "./transcode";
 
 /**
  * File storage for product media.
@@ -24,7 +24,7 @@ const RULES: Record<
   { maxBytes: number; types: Record<string, string> | null }
 > = {
   image: {
-    maxBytes: 10 * 1024 * 1024, // 10MB
+    maxBytes: 40 * 1024 * 1024, // 40MB — big raws are downscaled on save
     types: {
       "image/png": "png",
       "image/jpeg": "jpg",
@@ -85,6 +85,11 @@ export async function saveUpload(
   // Web-optimize videos (1080p, faststart, good quality) so they autoplay fast.
   if (kind === "video") {
     await optimizeVideo(fullPath);
+  }
+  // Web-optimize images (downscale long side, preserve alpha) so big 4K
+  // uploads shrink to a sane size for the verify reveal / cards.
+  if (kind === "image") {
+    await optimizeImage(fullPath);
   }
 
   return { url: `${PUBLIC_PREFIX}/${filename}` };

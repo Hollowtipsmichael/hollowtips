@@ -64,3 +64,64 @@ export async function optimizeVideo(absPath: string): Promise<void> {
     await unlink(tmp).catch(() => {});
   }
 }
+
+/**
+ * Web-optimize an image in place: downscale the long side to ~1600px and
+ * re-encode. Alpha is preserved for PNG/WebP (strain artwork is transparent).
+ * JPEGs are re-encoded at high quality. Safe: if ffmpeg is missing or the
+ * encode fails / grows the file, the original is left untouched.
+ */
+export async function optimizeImage(
+  absPath: string,
+  maxLongSide = 1600,
+): Promise<void> {
+  try {
+    const s = await stat(absPath);
+    if (s.size < 400 * 1024) return; // < 400KB → already small enough
+  } catch {
+    return;
+  }
+
+  const dir = path.dirname(absPath);
+  const ext = (path.extname(absPath) || ".png").toLowerCase();
+  const tmp = path.join(dir, `.opt-${Date.now()}${ext}`);
+
+  // Only downscale (never upscale): min(max,dim) on the long side, -2 keeps AR.
+  const scale = `scale='if(gt(iw,ih),min(${maxLongSide},iw),-1)':'if(gt(iw,ih),-1,min(${maxLongSide},ih))'`;
+  const isJpeg = ext === ".jpg" || ext === ".jpeg";
+  const args = [
+    "-y",
+    "-i", absPath,
+    "-vf", scale,
+    ...(isJpeg ? ["-q:v", "3"] : []), // JPEG quality (~high); PNG stays lossless
+    tmp,
+  ];
+
+  const ok = await new Promise<boolean>((resolve) => {
+    let proc;
+    try {
+      proc = spawn("ffmpeg", args, { stdio: "ignore" });
+    } catch {
+      resolve(false);
+      return;
+    }
+    proc.on("error", () => resolve(false));
+    proc.on("close", (code) => resolve(code === 0));
+  });
+
+  if (!ok) {
+    await unlink(tmp).catch(() => {});
+    return;
+  }
+
+  try {
+    const [orig, opt] = await Promise.all([stat(absPath), stat(tmp)]);
+    if (opt.size > 0 && opt.size <= orig.size) {
+      await rename(tmp, absPath);
+    } else {
+      await unlink(tmp).catch(() => {});
+    }
+  } catch {
+    await unlink(tmp).catch(() => {});
+  }
+}

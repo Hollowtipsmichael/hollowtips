@@ -53,6 +53,7 @@ async function main() {
   // Seed the 10 strains (idempotent — upsert by slug) + a demo variant each.
   for (const s of STRAINS) {
     const slug = slugify(s.name);
+    const artworkUrl = `/brand/strains/${slug}.png`;
     const product = await prisma.product.upsert({
       where: { slug },
       update: {
@@ -61,6 +62,7 @@ async function main() {
         size: "2G",
         productType: s.productType,
         description: s.description,
+        artworkUrl,
       },
       create: {
         name: s.name,
@@ -69,6 +71,7 @@ async function main() {
         size: "2G",
         productType: s.productType,
         description: s.description,
+        artworkUrl,
         isActive: true,
       },
     });

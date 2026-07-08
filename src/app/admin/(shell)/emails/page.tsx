@@ -6,12 +6,38 @@ import { DeleteEmailButton } from "@/components/admin/emails/DeleteEmailButton";
 export const metadata = { title: "Emails — Hollowtips Verify" };
 export const dynamic = "force-dynamic";
 
-export default async function EmailsPage() {
+const SOURCE_LABEL: Record<string, string> = {
+  "verify-legit": "Verify · Legit",
+  "verify-busted": "Verify · Busted",
+  "giveaway-page": "Giveaway",
+};
+const SOURCE_STYLE: Record<string, string> = {
+  "verify-legit": "border-legit/40 text-legit",
+  "verify-busted": "border-busted/40 text-busted",
+  "giveaway-page": "border-gold/40 text-gold",
+};
+const SOURCES = ["verify-legit", "verify-busted", "giveaway-page"] as const;
+
+export default async function EmailsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ source?: string }>;
+}) {
+  const { source } = await searchParams;
+  const activeSource = SOURCES.includes(source as (typeof SOURCES)[number])
+    ? source
+    : undefined;
+
   const emails = await prisma.emailCapture.findMany({
+    where: activeSource ? { source: activeSource } : undefined,
     include: { product: { select: { name: true } } },
     orderBy: { capturedAt: "desc" },
     take: 500,
   });
+
+  const exportHref = activeSource
+    ? `/api/admin/emails/export?source=${activeSource}`
+    : "/api/admin/emails/export";
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -29,13 +55,40 @@ export default async function EmailsPage() {
         </div>
         {emails.length > 0 && (
           <Link
-            href="/api/admin/emails/export"
+            href={exportHref}
             className="focus-gold inline-flex items-center gap-2 rounded-xl border border-subtle px-4 py-2.5 text-sm font-medium text-muted transition-colors hover:border-gold/40 hover:text-gold"
           >
             <FileDown className="h-4 w-4" />
             Export CSV
           </Link>
         )}
+      </div>
+
+      {/* Source filter */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Link
+          href="/admin/emails"
+          className={`rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide transition-colors ${
+            !activeSource
+              ? "border-gold/60 text-gold"
+              : "border-subtle text-muted hover:border-gold/40 hover:text-gold"
+          }`}
+        >
+          All
+        </Link>
+        {SOURCES.map((s) => (
+          <Link
+            key={s}
+            href={`/admin/emails?source=${s}`}
+            className={`rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide transition-colors ${
+              activeSource === s
+                ? SOURCE_STYLE[s]
+                : "border-subtle text-muted hover:border-gold/40 hover:text-gold"
+            }`}
+          >
+            {SOURCE_LABEL[s]}
+          </Link>
+        ))}
       </div>
 
       <div className="rule-gold" />
@@ -59,6 +112,7 @@ export default async function EmailsPage() {
                   <th className="px-4 py-3 font-medium">Email</th>
                   <th className="px-4 py-3 font-medium">Name</th>
                   <th className="px-4 py-3 font-medium">Phone</th>
+                  <th className="px-4 py-3 font-medium">Source</th>
                   <th className="px-4 py-3 font-medium">Product</th>
                   <th className="px-4 py-3 font-medium">Captured</th>
                   <th className="px-4 py-3 text-right font-medium">Actions</th>
@@ -73,6 +127,19 @@ export default async function EmailsPage() {
                     <td className="px-4 py-3 text-fg">{e.email}</td>
                     <td className="px-4 py-3 text-muted">{e.name ?? "—"}</td>
                     <td className="px-4 py-3 text-muted">{e.phone ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      {e.source ? (
+                        <span
+                          className={`inline-flex rounded-full border px-2 py-0.5 text-[11px] font-medium ${
+                            SOURCE_STYLE[e.source] || "border-subtle text-muted"
+                          }`}
+                        >
+                          {SOURCE_LABEL[e.source] ?? e.source}
+                        </span>
+                      ) : (
+                        <span className="text-muted">—</span>
+                      )}
+                    </td>
                     <td className="px-4 py-3 text-muted">
                       <span className="inline-flex items-center gap-1.5">
                         <Package className="h-3.5 w-3.5 text-gold/60" />

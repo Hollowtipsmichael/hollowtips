@@ -19,7 +19,7 @@ export function CodeEntryForm() {
     const c = normalize(code).trim();
     if (!c) return;
     setPending(true);
-    router.push(`/verify/${encodeURIComponent(c)}`);
+    router.push(`/verify?code=${encodeURIComponent(c)}`);
   }
 
   return (

@@ -55,7 +55,7 @@ const nav = [
   { href: "/lineup", label: "Lineup" },
   { href: "/media", label: "Media" },
   { href: "/verify", label: "Verify" },
-  { href: "/connect", label: "Giveaway" },
+  { href: "/giveaway", label: "Giveaway" },
 ];
 
 export function PublicFooter() {

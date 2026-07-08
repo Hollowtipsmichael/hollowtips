@@ -29,6 +29,14 @@ const config: Config = {
           orange: "#FF8A3D",
           cyan: "#3BD6C6",
         },
+        // Dev-brief tokens — strain type badges + verify verdicts
+        strain: {
+          sativa: "#e0913f", // orange
+          indica: "#8b6fc9", // purple
+          hybrid: "#5fae7f", // green
+        },
+        legit: "#22c55e",
+        busted: "#ef4444",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],

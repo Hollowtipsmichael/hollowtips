@@ -7,7 +7,7 @@ export const LINKS = {
   tiktok: "https://www.tiktok.com/@hollowtipsofficial",
   youtube: "https://www.youtube.com/@hollowtipsofficial",
   website: "https://hollowtips.com",
-  // No Telegram provided by client yet — placeholder.
-  telegram: "https://t.me/hollowtips",
-  giveaway: "/connect",
+  // Client-supplied Telegram (@OFFICIALHOLLOWTIPS).
+  telegram: "https://t.me/officialhollowtips",
+  giveaway: "/giveaway",
 };
