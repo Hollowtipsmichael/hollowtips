@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { TheChamberForm } from "@/components/verify/TheChamberForm";
 
 export const metadata: Metadata = {
   title: "Win 1 of 100 GTA VI Copies — Hollowtips",
   description:
-    "Hollowtips × GTA VI Giveaway. 100 copies, 100 winners at random. Free entry — join the email & SMS list. Selection November 19, 2026.",
+    "Hollowtips × GTA VI Giveaway. 100 winners picked Nov 19, 2026 — free digital copy, your choice of PS5 or Xbox. Free entry — join the email & SMS list.",
   openGraph: {
     title: "Win 1 of 100 GTA VI Copies — Hollowtips",
     description:
-      "Free entry — join the email & SMS list. 100 winners. Selection Nov 19, 2026.",
+      "100 winners picked Nov 19, 2026 — free digital copy, your choice of PS5 or Xbox. Free entry.",
     url: "/giveaway",
     siteName: "Hollowtips",
     type: "website",
@@ -30,12 +30,9 @@ export const metadata: Metadata = {
   },
 };
 
-const DETAILS = [
-  "No purchase necessary — entry is free",
-  "100 copies of Grand Theft Auto VI · 100 winners at random",
-  "Winner selection: November 19, 2026",
-  "Winners notified via email and SMS",
-  "One entry per person",
+const CONTROLLERS = [
+  { src: "/brand/controller-ps5.jpg", label: "PS5" },
+  { src: "/brand/controller-xbox.jpg", label: "Xbox" },
 ];
 
 export default function GiveawayPage() {
@@ -68,6 +65,34 @@ export default function GiveawayPage() {
         <h1 className="mt-1.5 font-condensed text-3xl font-black uppercase leading-[0.95] tracking-[1px] text-neon-gradient sm:text-4xl">
           Win 1 of 100 GTA VI Copies
         </h1>
+        <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-white/70">
+          Drop your info. That&apos;s it. 100 winners picked Nov 19, 2026 —
+          free digital copy, your choice of PS5 or Xbox.
+        </p>
+
+        {/* Your choice — gold Hollowtips controllers */}
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          {CONTROLLERS.map((c) => (
+            <figure
+              key={c.label}
+              className="overflow-hidden rounded-2xl border border-gold/25 bg-black"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={c.src}
+                width={800}
+                height={534}
+                loading="lazy"
+                decoding="async"
+                alt={`Gold Hollowtips ${c.label} controller`}
+                className="w-full"
+              />
+              <figcaption className="border-t border-gold/15 py-1.5 font-condensed text-[11px] font-bold uppercase tracking-[2px] text-gold">
+                {c.label}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
 
         {/* The Chamber = email list + SMS alerts */}
         <div className="mt-5 rounded-2xl border border-neon-pink/40 bg-black/60 p-5 shadow-neon-glow backdrop-blur-xl">
@@ -77,18 +102,25 @@ export default function GiveawayPage() {
           <p className="mb-4 text-xs text-white/50">
             Add your email and phone to be eligible. Both steps, 100% free.
           </p>
-          <TheChamberForm source="giveaway-page" accent="neon" />
+          <TheChamberForm
+            source="giveaway-page"
+            accent="neon"
+            cta="Enter the Giveaway"
+            footnote={
+              <>
+                No purchase necessary. 21+, US only. One entry per person. By
+                entering you agree to the{" "}
+                <Link
+                  href="/giveaway/rules"
+                  className="text-neon-pink underline underline-offset-2 hover:text-white"
+                >
+                  Official Rules
+                </Link>
+                . Msg &amp; data rates may apply — reply STOP to opt out.
+              </>
+            }
+          />
         </div>
-
-        {/* Key details */}
-        <ul className="mt-6 space-y-2 text-left">
-          {DETAILS.map((d) => (
-            <li key={d} className="flex items-start gap-2 text-[13px] text-white/70">
-              <Check className="mt-0.5 h-4 w-4 shrink-0 text-neon-pink" />
-              <span>{d}</span>
-            </li>
-          ))}
-        </ul>
 
         <p className="mt-6 font-condensed text-sm font-bold uppercase tracking-[2px] text-neon-gradient">
           Stay Vigilant. Level Up.

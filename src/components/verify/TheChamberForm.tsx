@@ -13,13 +13,21 @@ const PERKS =
  *
  * `accent`: "gold" (default — verify screens) | "neon" (flyer-styled
  * /giveaway page: pink focus borders + pink-gradient submit).
+ * `cta`: submit label — defaults to "Load Me In" (dev-brief copy);
+ * the giveaway page passes "Enter the Giveaway".
+ * `footnote`: node under the button — defaults to the perks line;
+ * the giveaway page passes its legal line + Official Rules link.
  */
 export function TheChamberForm({
   source,
   accent = "gold",
+  cta = "Load Me In",
+  footnote,
 }: {
   source: string;
   accent?: "gold" | "neon";
+  cta?: string;
+  footnote?: React.ReactNode;
 }) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
@@ -107,11 +115,11 @@ export function TheChamberForm({
             : "bg-gold text-black"
         }`}
       >
-        {state === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Load Me In"}
+        {state === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : cta}
       </button>
       {error && <p className="text-center text-xs text-red-400">{error}</p>}
       <p className="pt-1 text-center text-[11px] leading-relaxed text-white/45">
-        {PERKS}
+        {footnote ?? PERKS}
       </p>
     </form>
   );
