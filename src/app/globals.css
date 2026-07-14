@@ -61,6 +61,11 @@
     @apply bg-gold-gradient bg-clip-text text-transparent;
   }
 
+  /* Neon pink→purple gradient text (GTA-VI giveaway flyer palette) */
+  .text-neon-gradient {
+    @apply bg-neon-gradient bg-clip-text text-transparent;
+  }
+
   /* Bright polished metallic gold (matches the brand logo) — for wordmark/hero */
   .text-gold-shine {
     background-image: linear-gradient(

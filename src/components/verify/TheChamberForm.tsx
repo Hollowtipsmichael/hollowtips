@@ -10,8 +10,17 @@ const PERKS =
  * "The Chamber" — community lead-capture form. First Name / Email / Phone
  * (all required) → POST /api/chamber, tagged by `source`. Confirms inline
  * ("You're in. Stay locked.") — no redirect.
+ *
+ * `accent`: "gold" (default — verify screens) | "neon" (flyer-styled
+ * /giveaway page: pink focus borders + pink-gradient submit).
  */
-export function TheChamberForm({ source }: { source: string }) {
+export function TheChamberForm({
+  source,
+  accent = "gold",
+}: {
+  source: string;
+  accent?: "gold" | "neon";
+}) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -39,8 +48,10 @@ export function TheChamberForm({ source }: { source: string }) {
     }
   }
 
-  const inputCls =
-    "w-full rounded-xl border border-white/15 bg-black/40 py-3 pl-10 pr-3 text-white placeholder:text-white/40 focus:border-gold focus:outline-none";
+  const neon = accent === "neon";
+  const inputCls = `w-full rounded-xl border border-white/15 bg-black/40 py-3 pl-10 pr-3 text-white placeholder:text-white/40 focus:outline-none ${
+    neon ? "focus:border-neon-pink" : "focus:border-gold"
+  }`;
 
   if (state === "done") {
     return (
@@ -90,7 +101,11 @@ export function TheChamberForm({ source }: { source: string }) {
       <button
         type="submit"
         disabled={state === "loading"}
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-gold px-5 py-3.5 font-condensed text-base font-bold uppercase tracking-[1.5px] text-black transition active:scale-[0.98] disabled:opacity-70"
+        className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 font-condensed text-base font-bold uppercase tracking-[1.5px] transition active:scale-[0.98] disabled:opacity-70 ${
+          neon
+            ? "bg-neon-gradient text-white shadow-neon-glow"
+            : "bg-gold text-black"
+        }`}
       >
         {state === "loading" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Load Me In"}
       </button>

@@ -47,6 +47,9 @@ const barlow = Barlow({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://verifyhollowtips.com",
+  ),
   title: "Hollowtips Verify",
   description: "Premium QR product verification — Hollowtips admin.",
   icons: {

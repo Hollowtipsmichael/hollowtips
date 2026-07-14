@@ -37,6 +37,11 @@ const config: Config = {
         },
         legit: "#22c55e",
         busted: "#ef4444",
+        // GTA-VI giveaway flyer palette (giveaway page + Chamber CTA only)
+        neon: {
+          pink: "#FF2D8F",
+          purple: "#8B3DFF",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -52,6 +57,8 @@ const config: Config = {
       boxShadow: {
         "gold-glow": "0 0 24px rgba(212, 175, 55, 0.25)",
         "gold-glow-lg": "0 0 60px rgba(212, 175, 55, 0.28)",
+        "neon-glow": "0 0 24px rgba(255, 45, 143, 0.3)",
+        "neon-glow-lg": "0 0 60px rgba(255, 45, 143, 0.35)",
         panel: "0 1px 0 0 rgba(255,255,255,0.03), 0 8px 30px rgba(0,0,0,0.35)",
       },
       backgroundImage: {
@@ -59,6 +66,8 @@ const config: Config = {
           "linear-gradient(135deg, #F5D061 0%, #D4AF37 45%, #A67C00 100%)",
         "gold-sheen":
           "linear-gradient(135deg, rgba(245,208,97,0.18), rgba(212,175,55,0.06) 40%, transparent 70%)",
+        "neon-gradient":
+          "linear-gradient(135deg, #FF5FB0 0%, #FF2D8F 40%, #8B3DFF 100%)",
       },
       keyframes: {
         "fade-in": {

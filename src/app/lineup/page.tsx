@@ -1,4 +1,4 @@
-import { ShieldCheck, QrCode, Sparkles, ArrowRight } from "lucide-react";
+import { ShieldCheck, QrCode, Sparkles, ArrowRight, Crosshair } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { AgeGate } from "@/components/public/AgeGate";
@@ -41,12 +41,20 @@ export default async function LineupPage() {
         <a href="/">
           <HollowtipsLogo variant="full" size={34} />
         </a>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <a
             href="/media"
             className="text-sm font-semibold uppercase tracking-wide text-white/70 transition-colors hover:text-gold"
           >
             Media
+          </a>
+          <a
+            href="/giveaway"
+            aria-label="Join the Chamber — GTA VI giveaway"
+            className="focus-gold inline-flex items-center gap-1.5 rounded-xl border border-neon-pink/50 bg-neon-pink/10 px-3 py-2.5 text-sm font-semibold text-neon-pink transition-colors hover:border-neon-pink hover:bg-neon-pink/20 sm:px-4"
+          >
+            <Crosshair className="h-4 w-4" />
+            <span className="hidden sm:inline">Join the Chamber</span>
           </a>
           <a href="/verify" className="btn-gold focus-gold text-sm">
             <ShieldCheck className="h-4 w-4" />

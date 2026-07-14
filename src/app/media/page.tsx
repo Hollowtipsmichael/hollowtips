@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Crosshair } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { PublicFooter } from "@/components/public/PublicFooter";
@@ -42,10 +42,20 @@ export default async function MediaPage() {
         <Link href="/">
           <HollowtipsLogo variant="full" size={32} />
         </Link>
-        <Link href="/verify" className="btn-gold focus-gold text-sm">
-          <ShieldCheck className="h-4 w-4" />
-          Verify
-        </Link>
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <Link
+            href="/giveaway"
+            aria-label="Join the Chamber — GTA VI giveaway"
+            className="focus-gold inline-flex items-center gap-1.5 rounded-xl border border-neon-pink/50 bg-neon-pink/10 px-3 py-2.5 text-sm font-semibold text-neon-pink transition-colors hover:border-neon-pink hover:bg-neon-pink/20 sm:px-4"
+          >
+            <Crosshair className="h-4 w-4" />
+            <span className="hidden sm:inline">Join the Chamber</span>
+          </Link>
+          <Link href="/verify" className="btn-gold focus-gold text-sm">
+            <ShieldCheck className="h-4 w-4" />
+            Verify
+          </Link>
+        </div>
       </header>
 
       <section className="relative z-10 mx-auto max-w-6xl px-5 pb-16 pt-6">
