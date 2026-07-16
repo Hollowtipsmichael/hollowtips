@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShieldCheck, Crosshair } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { HollowtipsLogo } from "@/components/brand/HollowtipsLogo";
 import { PublicFooter } from "@/components/public/PublicFooter";
@@ -36,6 +36,7 @@ export default async function MediaPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
+      <div className="bg-monogram pointer-events-none fixed inset-0" />
       <div className="grain pointer-events-none fixed inset-0 opacity-50" />
 
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6">
@@ -46,10 +47,19 @@ export default async function MediaPage() {
           <Link
             href="/giveaway"
             aria-label="Join the Chamber — GTA VI giveaway"
-            className="focus-gold inline-flex items-center gap-1.5 rounded-xl border border-neon-pink/50 bg-neon-pink/10 px-3 py-2.5 text-sm font-semibold text-neon-pink transition-colors hover:border-neon-pink hover:bg-neon-pink/20 sm:px-4"
+            className="focus-gold inline-flex items-center gap-2 rounded-xl border border-neon-pink/50 bg-black p-1 transition-colors hover:border-neon-pink hover:bg-neon-pink/10 sm:pr-3"
           >
-            <Crosshair className="h-4 w-4" />
-            <span className="hidden sm:inline">Join the Chamber</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/brand/controller-icon.jpg"
+              width={182}
+              height={128}
+              alt=""
+              className="h-8 w-auto rounded-lg"
+            />
+            <span className="hidden text-sm font-semibold text-neon-pink sm:inline">
+              Join the Chamber
+            </span>
           </Link>
           <Link href="/verify" className="btn-gold focus-gold text-sm">
             <ShieldCheck className="h-4 w-4" />

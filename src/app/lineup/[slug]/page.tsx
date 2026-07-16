@@ -57,6 +57,7 @@ export default async function ProductDetailPage({
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-black text-white">
+      <div className="bg-monogram pointer-events-none fixed inset-0" />
       <div className="grain pointer-events-none fixed inset-0 opacity-50" />
 
       {/* Header */}

@@ -66,6 +66,14 @@
     @apply bg-neon-gradient bg-clip-text text-transparent;
   }
 
+  /* Signature "H" monogram lattice — fine, tone-on-tone luxury texture
+     (from the client's deck bg). Two offset serif-H glyphs per tile, white
+     at ~4% so it reads as fabric, not pattern. Layer over near-black bgs. */
+  .bg-monogram {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.038' stroke-width='1' fill='none'%3E%3Cpath d='M4 3v8M10 3v8M4 7h6M2.5 3h3M2.5 11h3M8.5 3h3M8.5 11h3'/%3E%3Cpath d='M20 19v8M26 19v8M20 23h6M18.5 19h3M18.5 27h3M24.5 19h3M24.5 27h3'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 32px 32px;
+  }
+
   /* Bright polished metallic gold (matches the brand logo) — for wordmark/hero */
   .text-gold-shine {
     background-image: linear-gradient(

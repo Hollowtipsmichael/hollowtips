@@ -40,6 +40,7 @@ export default function GiveawayPage() {
     <main className="relative min-h-screen overflow-hidden bg-[#07060B] px-5 py-8 text-white">
       {/* neon glow backdrop (flyer palette) */}
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(60%_45%_at_18%_0%,rgba(255,45,143,0.16),transparent_60%),radial-gradient(55%_45%_at_85%_100%,rgba(139,61,255,0.18),transparent_60%)]" />
+      <div className="bg-monogram pointer-events-none absolute inset-0 z-0" />
       <div className="grain pointer-events-none absolute inset-0 z-0 opacity-50" />
 
       <div className="relative z-10 mx-auto w-full max-w-md animate-fade-in text-center">

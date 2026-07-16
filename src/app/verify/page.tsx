@@ -71,16 +71,19 @@ export default async function VerifyPage({
     : null;
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-[#0a0a0a] text-[#F2F0EA]">
+    <main className="relative flex min-h-screen flex-col items-center bg-[#0a0a0a] text-[#F2F0EA]">
       {record && <ScanBeacon code={normalized} />}
 
-      <nav className="flex w-full max-w-[480px] items-center justify-between px-6 pt-5">
+      {/* signature H-monogram luxury texture */}
+      <div className="bg-monogram pointer-events-none absolute inset-0" />
+
+      <nav className="relative z-10 flex w-full max-w-[480px] items-center justify-between px-6 pt-5">
         <Link href="/">
           <HollowtipsLogo variant="full" size={26} />
         </Link>
       </nav>
 
-      <div className="flex w-full max-w-[480px] flex-1 flex-col items-center px-6 pb-12">
+      <div className="relative z-10 flex w-full max-w-[480px] flex-1 flex-col items-center px-6 pb-12">
         <VerifyResult
           variant={legit ? "legit" : "busted"}
           code={normalized}
@@ -88,7 +91,7 @@ export default async function VerifyPage({
         />
       </div>
 
-      <p className="px-6 pb-9 text-center text-[11px] tracking-[1px] text-[#333]">
+      <p className="relative z-10 px-6 pb-9 text-center text-[11px] tracking-[1px] text-[#333]">
         21+ ONLY · © {new Date().getFullYear()} HOLLOWTIPS
       </p>
     </main>

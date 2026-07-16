@@ -50,6 +50,7 @@ export default function GiveawayRulesPage() {
   return (
     <main className="relative min-h-screen bg-[#07060B] px-5 py-10 text-white">
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(60%_40%_at_50%_0%,rgba(255,45,143,0.1),transparent_60%)]" />
+      <div className="bg-monogram pointer-events-none absolute inset-0 z-0" />
 
       <div className="relative z-10 mx-auto w-full max-w-2xl animate-fade-in">
         <div className="mb-8 flex justify-center">
