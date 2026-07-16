@@ -36,7 +36,7 @@ export async function syncToMailchimp(input: {
   if (input.firstName) mergeFields.FNAME = input.firstName;
   if (input.phone) mergeFields.PHONE = input.phone;
 
-  await fetch(`${base}/members/${hash}`, {
+  const res = await fetch(`${base}/members/${hash}`, {
     method: "PUT",
     headers: { Authorization: auth, "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -45,6 +45,14 @@ export async function syncToMailchimp(input: {
       merge_fields: mergeFields,
     }),
   });
+  // Mailchimp rejects some addresses (fake/test domains, cleaned emails)
+  // with a 4xx — log it so failed syncs are visible in pm2 logs. The lead
+  // is already saved in our DB either way.
+  if (!res.ok) {
+    const detail = await res.text().catch(() => "");
+    console.error(`Mailchimp upsert ${res.status} for ${email}: ${detail}`);
+    return;
+  }
 
   // 2) Tag by source so leads are segmentable in the audience.
   if (input.source) {
