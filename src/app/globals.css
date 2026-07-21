@@ -66,12 +66,20 @@
     @apply bg-neon-gradient bg-clip-text text-transparent;
   }
 
-  /* Signature "H" monogram lattice — fine, tone-on-tone luxury texture
-     (from the client's deck bg). Two offset serif-H glyphs per tile, white
-     at ~4% so it reads as fabric, not pattern. Layer over near-black bgs. */
+  /* Signature "H" monogram print — the client's actual deck artwork,
+     vectorized pixel-exact from its seamless 100x84 tile. Rendered at 56px
+     and 4% white so it reads as fine tone-on-tone weave, more subtle than
+     the deck original. Layer over near-black bgs. */
   .bg-monogram {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg stroke='%23ffffff' stroke-opacity='0.038' stroke-width='1' fill='none'%3E%3Cpath d='M4 3v8M10 3v8M4 7h6M2.5 3h3M2.5 11h3M8.5 3h3M8.5 11h3'/%3E%3Cpath d='M20 19v8M26 19v8M20 23h6M18.5 19h3M18.5 27h3M24.5 19h3M24.5 27h3'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 32px 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='84' viewBox='0 0 100 84'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Crect x='0' y='0' width='49' height='5'/%3E%3Crect x='62' y='0' width='38' height='5'/%3E%3Crect x='40' y='5' width='9' height='1'/%3E%3Crect x='62' y='5' width='8' height='27'/%3E%3Crect x='41' y='6' width='8' height='26'/%3E%3Crect x='12' y='12' width='16' height='8'/%3E%3Crect x='83' y='12' width='16' height='8'/%3E%3Crect x='12' y='20' width='8' height='55'/%3E%3Crect x='90' y='20' width='9' height='54'/%3E%3Crect x='40' y='24' width='1' height='8'/%3E%3Crect x='70' y='24' width='1' height='8'/%3E%3Crect x='33' y='25' width='7' height='7'/%3E%3Crect x='71' y='25' width='7' height='7'/%3E%3Crect x='20' y='39' width='1' height='9'/%3E%3Crect x='21' y='40' width='69' height='7'/%3E%3Crect x='33' y='54' width='16' height='8'/%3E%3Crect x='62' y='54' width='16' height='8'/%3E%3Crect x='40' y='62' width='9' height='1'/%3E%3Crect x='62' y='62' width='8' height='22'/%3E%3Crect x='41' y='63' width='8' height='21'/%3E%3Crect x='20' y='66' width='1' height='9'/%3E%3Crect x='21' y='67' width='7' height='7'/%3E%3Crect x='83' y='67' width='7' height='8'/%3E%3Crect x='21' y='74' width='6' height='1'/%3E%3Crect x='90' y='74' width='8' height='1'/%3E%3Crect x='40' y='81' width='1' height='3'/%3E%3Crect x='70' y='81' width='1' height='3'/%3E%3Crect x='0' y='82' width='40' height='2'/%3E%3Crect x='71' y='82' width='29' height='2'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 56px 47px;
+  }
+  /* Phones show the tile larger relative to the viewport — tighten the weave
+     so it stays a fine texture rather than a visible pattern. */
+  @media (max-width: 640px) {
+    .bg-monogram {
+      background-size: 44px 37px;
+    }
   }
 
   /* Bright polished metallic gold (matches the brand logo) — for wordmark/hero */
