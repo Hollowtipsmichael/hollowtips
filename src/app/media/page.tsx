@@ -40,8 +40,8 @@ export default async function MediaPage() {
       <div className="grain pointer-events-none fixed inset-0 opacity-50" />
 
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6">
-        <Link href="/">
-          <HollowtipsLogo variant="full" size={32} />
+        <Link href="/" aria-label="Hollowtips home">
+          <HollowtipsLogo variant="mark" size={46} />
         </Link>
         <div className="flex items-center gap-2.5 sm:gap-3">
           <Link
@@ -51,11 +51,11 @@ export default async function MediaPage() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/controller-icon.jpg"
-              width={182}
+              src="/brand/blockstar-icon.png"
+              width={128}
               height={128}
               alt=""
-              className="h-8 w-auto rounded-lg"
+              className="h-9 w-9 rounded-lg"
             />
             <span className="hidden text-sm font-semibold text-neon-pink sm:inline">
               Join the Chamber

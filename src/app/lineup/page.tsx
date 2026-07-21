@@ -39,13 +39,13 @@ export default async function LineupPage() {
 
       {/* Header */}
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-6">
-        <a href="/">
-          <HollowtipsLogo variant="full" size={34} />
+        <a href="/" aria-label="Hollowtips home">
+          <HollowtipsLogo variant="mark" size={46} />
         </a>
         <div className="flex items-center gap-2.5 sm:gap-3">
           <a
             href="/media"
-            className="text-sm font-semibold uppercase tracking-wide text-white/70 transition-colors hover:text-gold"
+            className="font-condensed text-lg font-bold uppercase tracking-wide text-white/80 transition-colors hover:text-gold"
           >
             Media
           </a>
@@ -56,11 +56,11 @@ export default async function LineupPage() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/controller-icon.jpg"
-              width={182}
+              src="/brand/blockstar-icon.png"
+              width={128}
               height={128}
               alt=""
-              className="h-8 w-auto rounded-lg"
+              className="h-9 w-9 rounded-lg"
             />
             <span className="hidden text-sm font-semibold text-neon-pink sm:inline">
               Join the Chamber
