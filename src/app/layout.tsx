@@ -53,7 +53,20 @@ export const metadata: Metadata = {
   title: "Hollowtips Verify",
   description: "Premium QR product verification — Hollowtips admin.",
   icons: {
-    icon: "/brand/hollowtips-logo.png",
+    icon: "/brand/favicon.png",
+    apple: "/brand/apple-icon.png",
+  },
+  openGraph: {
+    title: "Hollowtips",
+    description:
+      "Scratch the panel on your Hollowtips pack and enter the code to verify authenticity.",
+    siteName: "Hollowtips",
+    type: "website",
+    images: [{ url: "/brand/og-matrix.jpg", width: 1152, height: 1152, alt: "Hollowtips" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/brand/og-matrix.jpg"],
   },
 };
 
